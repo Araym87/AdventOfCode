@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace AdventOfCode
 {
@@ -19,7 +21,75 @@ namespace AdventOfCode
             //ThirdDayPartTwo();
             //FourthDayPartOne();
             //FourthDayPartTwo();
+            //FifthDayPartOne();
+            //FifthDayPartTwo();
         }
+
+        #region DayFive
+
+        private static void FifthDayPartOne()
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDayFive.txt");
+            var countOfNiceStrings = 0;
+            while ((line = file.ReadLine()) != null)
+            {
+                if(Regex.IsMatch(line, "(ab|cd|pq|xy)"))
+                    continue;
+
+                if (Regex.Matches(line, "[aeiou]").Count >= 3 && Regex.IsMatch(line, @"(.)\1"))
+                    countOfNiceStrings++;
+            }         
+            file.Close();
+
+            Console.WriteLine("" + countOfNiceStrings);
+            Console.ReadLine();
+        }
+        
+        private static void FifthDayPartTwo()
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDayFive.txt");
+            var countOfNiceStrings = 0;
+            
+            while ((line = file.ReadLine()) != null)
+            {
+                var firstCondition = false;
+                var secondCondition = false;
+
+                // First Condition
+                for (var i = 0; i < line.Length - 1; i++)
+                {
+                    var pair = line.Substring(i, 2);
+
+                    if (line.Substring(i + 2).Contains(pair))
+                    {
+                        firstCondition = true;
+                        break;
+                    }
+                }
+
+                // Second Condition
+                for (int i = 0; i < line.Length; i++)
+                {
+                    if (i + 2 >= line.Length) break;
+
+                    if (line[i].Equals(line[i + 2]))
+                    {
+                        secondCondition = true;
+                        break;
+                    }
+                }
+
+                if (firstCondition && secondCondition)
+                    countOfNiceStrings++;
+            }
+
+            Console.WriteLine("" + countOfNiceStrings);
+            Console.ReadLine();
+        }
+
+        #endregion
 
         #region DayFour
 
