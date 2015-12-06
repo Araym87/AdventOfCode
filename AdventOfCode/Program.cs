@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -23,7 +22,121 @@ namespace AdventOfCode
             //FourthDayPartTwo();
             //FifthDayPartOne();
             //FifthDayPartTwo();
+            //SixthDayPartOne();
+            //SixthDayPartTwo();
         }
+
+        #region DaySix
+
+        private static void SixthDayPartOne()
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDaySix.txt");
+            var lights = new bool[1000,1000];
+            
+            while ((line = file.ReadLine()) != null)
+            {
+                bool? turnOn = null;
+                if (line.StartsWith("turn on"))
+                    turnOn = true;
+                else if (line.StartsWith("turn off"))
+                    turnOn = false;
+
+                var items = line.Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries).Where(i =>
+                { return i.ToCharArray().All(letter => char.IsDigit(letter) || letter.Equals(',')); }).ToList();
+
+                var coordinations = new[]
+                {
+                    new Point(0, 0),
+                    new Point(0, 0)
+                };
+
+                // Parse coordinations
+                for (var i = 0; i < items.Count; i++)
+                {
+                    var parsedCoord = items[i].Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    coordinations[i].X = Convert.ToInt32(parsedCoord[0]);
+                    coordinations[i].Y = Convert.ToInt32(parsedCoord[1]);
+                }
+
+                for (var i = coordinations[0].X; i <= coordinations[1].X; i++)
+                {
+                    for (var j = coordinations[0].Y; j <= coordinations[1].Y; j++)
+                    {
+                        if (!turnOn.HasValue)
+                            lights[j, i] = !lights[j, i];
+                        else
+                            lights[j, i] = turnOn.Value;
+                    }
+                }
+            }
+
+            var totalCount = lights.Cast<bool>().Count(light => light);
+
+            file.Close();
+            Console.WriteLine("" + totalCount);
+            Console.ReadLine();
+        }
+
+        private static void SixthDayPartTwo()
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDaySix.txt");
+            var lights = new int[1000, 1000];
+
+            while ((line = file.ReadLine()) != null)
+            {
+                bool? turnOn = null;
+                if (line.StartsWith("turn on"))
+                    turnOn = true;
+                else if (line.StartsWith("turn off"))
+                    turnOn = false;
+
+                var items = line.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries).Where(i =>
+                { return i.ToCharArray().All(letter => char.IsDigit(letter) || letter.Equals(',')); }).ToList();
+
+                var coordinations = new[]
+                {
+                    new Point(0, 0),
+                    new Point(0, 0)
+                };
+
+                // Parse coordinations
+                for (var i = 0; i < items.Count; i++)
+                {
+                    var parsedCoord = items[i].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    coordinations[i].X = Convert.ToInt32(parsedCoord[0]);
+                    coordinations[i].Y = Convert.ToInt32(parsedCoord[1]);
+                }
+
+                for (var i = coordinations[0].X; i <= coordinations[1].X; i++)
+                {
+                    for (var j = coordinations[0].Y; j <= coordinations[1].Y; j++)
+                    {
+
+                        if (!turnOn.HasValue)
+                            lights[j, i] += 2;
+                        else if(turnOn.Value)
+                            lights[j, i] += 1;
+                        else
+                        {
+                            if(lights[j, i] > 0)
+                                lights[j, i] -= 1;
+                        }
+                    }
+                }
+
+            }
+
+            var totalCount = lights.Cast<int>().Sum();
+
+            file.Close();
+            Console.WriteLine("" + totalCount);
+            Console.ReadLine();
+        }
+
+
+        #endregion
 
         #region DayFive
 
