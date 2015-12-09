@@ -3,13 +3,12 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml.XPath;
+using AdventOfCode.NinthDay;
 using AdventOfCode.SeventhDay;
 
 namespace AdventOfCode
@@ -33,7 +32,86 @@ namespace AdventOfCode
             //SeventhDayPartTwo();
             //EightDayPartOne();
             //EightDayPartTwo();
+            //NinthDay();
         }
+        
+        #region DayNine
+
+        private static void NinthDay()
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDayNine.txt");
+
+            var cities = new List<City>();
+            while ((line = file.ReadLine()) != null)
+            {
+                var parts = line.Split(new[] {'='}, StringSplitOptions.RemoveEmptyEntries);
+                var citiesString =
+                    parts[0].Split(new[] {" to "}, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim()).ToList();
+
+                var route = new Route {Distance = int.Parse(parts[1].Trim())};
+                foreach (var city in citiesString)
+                {
+                    var cityExist = cities.FirstOrDefault(c => c.Name.Equals(city));
+                    if (cityExist == null)
+                    {
+                        cityExist = new City {Name = city};
+                        cities.Add(cityExist);
+                    }
+                    if (route.City1 == null)
+                    {
+                        cityExist.OneWays.Add(route);
+                        route.City1 = cityExist;
+                    }
+                    else
+                    {
+                        cityExist.OneWays.Add(new Route
+                        {
+                            City1 = cityExist,
+                            City2 = route.City1,
+                            Distance = route.Distance
+                        });
+                        route.City2 = cityExist;
+                    }
+                }
+            }
+
+            var shortestDistance = int.MaxValue;
+            var longestDistance = int.MinValue;
+            foreach (var city in cities)
+            {
+                Travel(city, new List<string>(), cities.Count, 0, ref shortestDistance, ref longestDistance);
+            }
+
+            file.Close();
+
+            Console.WriteLine($"Shortest distance is {shortestDistance}");
+            Console.WriteLine($"Longest distance is {longestDistance}");
+            Console.ReadLine();
+        }
+
+        private static void Travel(City actualCity, ICollection<string> visitedCities, int totalCities, int distance, ref int shortestDistance, ref int longestDistance)
+        {
+            // Cannot use, because I am looking also for the longest route
+            //if(distance > shortestDistance)
+            //    return;
+            visitedCities.Add(actualCity.Name);
+            if (visitedCities.Count.Equals(totalCities))
+            {
+                if (distance < shortestDistance)
+                    shortestDistance = distance;
+                if (distance > longestDistance)
+                    longestDistance = distance;
+                return;
+            }
+
+            foreach (var route in actualCity.OneWays.Where(route => !visitedCities.Contains(route.City2.Name)))
+            {
+                Travel(route.City2, visitedCities.ToList(), totalCities, distance + route.Distance, ref shortestDistance, ref longestDistance);
+            }
+        }
+
+        #endregion
 
         #region DayEight
 
@@ -101,10 +179,8 @@ namespace AdventOfCode
             {
                 var parts = line.Split(new[] { "->" }, StringSplitOptions.RemoveEmptyEntries);
                 var usedOperation = Operation.EQUALS;
-                foreach (var operation in operations)
+                foreach (var operation in operations.Where(operation => parts[0].Contains(operation.ToString())))
                 {
-                    if (!parts[0].Contains(operation.ToString())) continue;
-
                     usedOperation = operation;
                     parts[0] = parts[0].Replace(operation.ToString(), ";");
                     break;
@@ -139,6 +215,15 @@ namespace AdventOfCode
                 });
             }
 
+            Computate(knownResults, items);
+            
+            file.Close();
+            Console.WriteLine($"Signal on wire a is {knownResults["a"]}");
+            Console.ReadLine();
+        }
+
+        private static void Computate(Dictionary<string, ushort> knownResults, List<Node> items)
+        {
             while (!knownResults.ContainsKey("a"))
             {
                 // Find all nodes, which can be counted
@@ -151,19 +236,14 @@ namespace AdventOfCode
                         shorts.Add(countableItem.KnownChildValue.Value);
 
                     if (!knownResults.ContainsKey(countableItem.Root))
-                        knownResults.Add(countableItem.Root, Computate(countableItem.Operation, shorts));
+                        knownResults.Add(countableItem.Root, Calculate(countableItem.Operation, shorts));
 
                     items.Remove(countableItem);
                 }
-
-                //Count(root, items, results, new List<string>());
             }
-            file.Close();
-            Console.WriteLine("" + knownResults["a"]);
-            Console.ReadLine();
         }
 
-        private static ushort Computate(Operation operation, IReadOnlyList<ushort> items)
+        private static ushort Calculate(Operation operation, IReadOnlyList<ushort> items)
         {
             switch (operation)
             {
@@ -190,10 +270,8 @@ namespace AdventOfCode
             {
                 var parts = line.Split(new[] { "->" }, StringSplitOptions.RemoveEmptyEntries);
                 var usedOperation = Operation.EQUALS;
-                foreach (var operation in operations)
+                foreach (var operation in operations.Where(operation => parts[0].Contains(operation.ToString())))
                 {
-                    if (!parts[0].Contains(operation.ToString())) continue;
-
                     usedOperation = operation;
                     parts[0] = parts[0].Replace(operation.ToString(), ";");
                     break;
@@ -230,46 +308,14 @@ namespace AdventOfCode
 
             var items2 = items.ToList();
             var results = knownResults.ToDictionary(knownResult => knownResult.Key, knownResult => knownResult.Value);
-            while (!results.ContainsKey("a"))
-            {
-                // Find all nodes, which can be counted
-                var countableItems = items.Where(i => i.Childs.TrueForAll(j => results.ContainsKey(j))).ToList();
-
-                foreach (var countableItem in countableItems)
-                {
-                    var shorts = countableItem.Childs.Select(child => results[child]).ToList();
-                    if (countableItem.KnownChildValue.HasValue)
-                        shorts.Add(countableItem.KnownChildValue.Value);
-
-                    if (!results.ContainsKey(countableItem.Root))
-                        results.Add(countableItem.Root, Computate(countableItem.Operation, shorts));
-
-                    items.Remove(countableItem);
-                }
-            }
+            Computate(results, items);
 
             knownResults["b"] = results["a"];
             items = items2;
-            while (!knownResults.ContainsKey("a"))
-            {
-                // Find all nodes, which can be counted
-                var countableItems = items.Where(i => i.Childs.TrueForAll(j => knownResults.ContainsKey(j))).ToList();
-
-                foreach (var countableItem in countableItems)
-                {
-                    var shorts = countableItem.Childs.Select(child => knownResults[child]).ToList();
-                    if (countableItem.KnownChildValue.HasValue)
-                        shorts.Add(countableItem.KnownChildValue.Value);
-
-                    if (!knownResults.ContainsKey(countableItem.Root))
-                        knownResults.Add(countableItem.Root, Computate(countableItem.Operation, shorts));
-
-                    items.Remove(countableItem);
-                }
-            }
+            Computate(knownResults, items);
 
             file.Close();
-            Console.WriteLine("" + knownResults["a"]);
+            Console.WriteLine($"Signal on wire a is {knownResults["a"]}");
             Console.ReadLine();
         }
 
