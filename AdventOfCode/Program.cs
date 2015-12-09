@@ -1,11 +1,16 @@
 ﻿using System;
+using System.CodeDom;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.XPath;
+using AdventOfCode.SeventhDay;
 
 namespace AdventOfCode
 {
@@ -24,7 +29,251 @@ namespace AdventOfCode
             //FifthDayPartTwo();
             //SixthDayPartOne();
             //SixthDayPartTwo();
+            //SeventhDayPartOne();
+            //SeventhDayPartTwo();
+            //EightDayPartOne();
+            //EightDayPartTwo();
         }
+
+        #region DayEight
+
+        private static void EightDayPartOne()
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDayEight.txt");
+
+            var stringCount = 0;
+            var memoryCount = 0;
+            while ((line = file.ReadLine()) != null)
+            {
+                stringCount += line.Length;
+                memoryCount += Regex.Unescape(line.Substring(1, line.Length - 2)).Length;
+            }
+
+            file.Close();
+
+            Console.WriteLine("" + (stringCount - memoryCount));
+            Console.ReadLine();
+        }
+
+        private static void EightDayPartTwo()
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDayEight.txt");
+
+            var stringCount = 0;
+            var memoryCount = 0;
+            while ((line = file.ReadLine()) != null)
+            {
+                memoryCount += line.Length;
+                var regexQay = Regex.Escape(line);
+                // Google magic
+                using (var writer = new StringWriter())
+                {
+                    using (var provider = CodeDomProvider.CreateProvider("CSharp"))
+                    {
+                        provider.GenerateCodeFromExpression(new CodePrimitiveExpression(line), writer, null);
+                        regexQay = writer.ToString();
+                    }
+                }
+                stringCount += regexQay.Length;
+            }
+
+            file.Close();
+
+            Console.WriteLine("" + (stringCount - memoryCount));
+            Console.ReadLine();
+        }
+
+        #endregion
+
+        #region DaySeven
+
+        private static void SeventhDayPartOne()
+        {
+            var operations = Enum.GetValues(typeof(Operation)).Cast<Operation>().ToList();
+            string line;
+            var file = new StreamReader("Inputs\\inputDaySeven.txt");
+            var items = new List<Node>();
+            var knownResults = new Dictionary<string, ushort>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                var parts = line.Split(new[] { "->" }, StringSplitOptions.RemoveEmptyEntries);
+                var usedOperation = Operation.EQUALS;
+                foreach (var operation in operations)
+                {
+                    if (!parts[0].Contains(operation.ToString())) continue;
+
+                    usedOperation = operation;
+                    parts[0] = parts[0].Replace(operation.ToString(), ";");
+                    break;
+                }
+
+                var inputParams = parts[0].Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList().Select(i => i.Trim()).ToList();
+                var outputParam = parts[1].Trim();
+
+                ushort values = 0;
+                var resultFound = false;
+                // Convert to short
+                for (var i = 0; i < inputParams.Count; i++)
+                {
+                    if (!ushort.TryParse(inputParams[i], out values)) continue;
+
+                    if (inputParams.Count == 1)
+                    {
+                        knownResults.Add(outputParam, values);
+                        resultFound = true;
+                    }
+                    inputParams.RemoveAt(i--);
+                    break;
+                }
+                if (resultFound) continue;
+
+                items.Add(new Node
+                {
+                    Childs = inputParams.ToList(),
+                    KnownChildValue = values,
+                    Operation = usedOperation,
+                    Root = outputParam
+                });
+            }
+
+            while (!knownResults.ContainsKey("a"))
+            {
+                // Find all nodes, which can be counted
+                var countableItems = items.Where(i => i.Childs.TrueForAll(j => knownResults.ContainsKey(j))).ToList();
+
+                foreach (var countableItem in countableItems)
+                {
+                    var shorts = countableItem.Childs.Select(child => knownResults[child]).ToList();
+                    if (countableItem.KnownChildValue.HasValue)
+                        shorts.Add(countableItem.KnownChildValue.Value);
+
+                    if (!knownResults.ContainsKey(countableItem.Root))
+                        knownResults.Add(countableItem.Root, Computate(countableItem.Operation, shorts));
+
+                    items.Remove(countableItem);
+                }
+
+                //Count(root, items, results, new List<string>());
+            }
+            file.Close();
+            Console.WriteLine("" + knownResults["a"]);
+            Console.ReadLine();
+        }
+
+        private static ushort Computate(Operation operation, IReadOnlyList<ushort> items)
+        {
+            switch (operation)
+            {
+                    case Operation.NOT: return (ushort) ~items[0];
+                    case Operation.AND:
+                    return (ushort) (items[0] & items[1]);
+                    case Operation.OR: return (ushort)(items[0] | items[1]);
+                    case Operation.LSHIFT: return (ushort)(items[0] << items[1]);
+                    case Operation.RSHIFT: return (ushort)(items[0] >> items[1]);
+                    case Operation.EQUALS: return items[0];
+            }
+            return 0;
+        }
+
+        private static void SeventhDayPartTwo()
+        {
+            var operations = Enum.GetValues(typeof(Operation)).Cast<Operation>().ToList();
+            string line;
+            var file = new StreamReader("Inputs\\inputDaySeven.txt");
+            var items = new List<Node>();
+            var knownResults = new Dictionary<string, ushort>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                var parts = line.Split(new[] { "->" }, StringSplitOptions.RemoveEmptyEntries);
+                var usedOperation = Operation.EQUALS;
+                foreach (var operation in operations)
+                {
+                    if (!parts[0].Contains(operation.ToString())) continue;
+
+                    usedOperation = operation;
+                    parts[0] = parts[0].Replace(operation.ToString(), ";");
+                    break;
+                }
+
+                var inputParams = parts[0].Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList().Select(i => i.Trim()).ToList();
+                var outputParam = parts[1].Trim();
+
+                ushort values = 0;
+                var resultFound = false;
+                // Convert to short
+                for (var i = 0; i < inputParams.Count; i++)
+                {
+                    if (!ushort.TryParse(inputParams[i], out values)) continue;
+
+                    if (inputParams.Count == 1)
+                    {
+                        knownResults.Add(outputParam, values);
+                        resultFound = true;
+                    }
+                    inputParams.RemoveAt(i--);
+                    break;
+                }
+                if (resultFound) continue;
+
+                items.Add(new Node
+                {
+                    Childs = inputParams.ToList(),
+                    KnownChildValue = values,
+                    Operation = usedOperation,
+                    Root = outputParam
+                });
+            }
+
+            var items2 = items.ToList();
+            var results = knownResults.ToDictionary(knownResult => knownResult.Key, knownResult => knownResult.Value);
+            while (!results.ContainsKey("a"))
+            {
+                // Find all nodes, which can be counted
+                var countableItems = items.Where(i => i.Childs.TrueForAll(j => results.ContainsKey(j))).ToList();
+
+                foreach (var countableItem in countableItems)
+                {
+                    var shorts = countableItem.Childs.Select(child => results[child]).ToList();
+                    if (countableItem.KnownChildValue.HasValue)
+                        shorts.Add(countableItem.KnownChildValue.Value);
+
+                    if (!results.ContainsKey(countableItem.Root))
+                        results.Add(countableItem.Root, Computate(countableItem.Operation, shorts));
+
+                    items.Remove(countableItem);
+                }
+            }
+
+            knownResults["b"] = results["a"];
+            items = items2;
+            while (!knownResults.ContainsKey("a"))
+            {
+                // Find all nodes, which can be counted
+                var countableItems = items.Where(i => i.Childs.TrueForAll(j => knownResults.ContainsKey(j))).ToList();
+
+                foreach (var countableItem in countableItems)
+                {
+                    var shorts = countableItem.Childs.Select(child => knownResults[child]).ToList();
+                    if (countableItem.KnownChildValue.HasValue)
+                        shorts.Add(countableItem.KnownChildValue.Value);
+
+                    if (!knownResults.ContainsKey(countableItem.Root))
+                        knownResults.Add(countableItem.Root, Computate(countableItem.Operation, shorts));
+
+                    items.Remove(countableItem);
+                }
+            }
+
+            file.Close();
+            Console.WriteLine("" + knownResults["a"]);
+            Console.ReadLine();
+        }
+
+        #endregion
 
         #region DaySix
 
@@ -164,7 +413,8 @@ namespace AdventOfCode
             string line;
             var file = new StreamReader("Inputs\\inputDayFive.txt");
             var countOfNiceStrings = 0;
-            
+            var first = 0;
+            var second = 0;
             while ((line = file.ReadLine()) != null)
             {
                 var firstCondition = false;
@@ -196,6 +446,12 @@ namespace AdventOfCode
 
                 if (firstCondition && secondCondition)
                     countOfNiceStrings++;
+
+                if (firstCondition)
+                    first++;
+
+                if (secondCondition)
+                    second++;
             }
 
             Console.WriteLine("" + countOfNiceStrings);
