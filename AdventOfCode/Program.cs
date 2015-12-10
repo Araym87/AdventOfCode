@@ -33,8 +33,48 @@ namespace AdventOfCode
             //EightDayPartOne();
             //EightDayPartTwo();
             //NinthDay();
+            //TenthDay(40);
+            //TenthDay(50);
         }
-        
+
+        #region DayTen
+
+        private static void TenthDay(int iterations)
+        {
+            var input = "3113322113";
+
+            for (var i = 0; i < iterations; i++)
+            {
+                var newInput = new StringBuilder();
+                var numberOfSameChar = 1;
+                var lastChar = char.MaxValue;
+                foreach (var @char in input)
+                {
+                    if (lastChar.Equals(char.MaxValue))
+                    {
+                        lastChar = @char;
+                        continue;
+                    }
+                    if (@char.Equals(lastChar))
+                    {
+                        numberOfSameChar++;
+                        continue;
+                    }
+
+                    newInput.Append($"{numberOfSameChar}{lastChar}");
+                    lastChar = @char;
+                    numberOfSameChar = 1;
+                }
+                newInput.Append($"{numberOfSameChar}{lastChar}");
+                input = newInput.ToString();
+            }
+
+            Console.WriteLine($"Length of result: {input.Length}");
+            Console.ReadLine();
+        }
+
+        #endregion
+
         #region DayNine
 
         private static void NinthDay()
