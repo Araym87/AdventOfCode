@@ -10,6 +10,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using AdventOfCode.NinthDay;
 using AdventOfCode.SeventhDay;
+using AdventOfCode.ThirteenthDay;
+using AdventOfCode.TwelfthDay;
 
 namespace AdventOfCode
 {
@@ -35,7 +37,304 @@ namespace AdventOfCode
             //NinthDay();
             //TenthDay(40);
             //TenthDay(50);
+            //EleventhDay("cqjxjnds");
+            //EleventhDay(EleventhDay("cqjxjnds", false));
+            //TwelfthDayPartOne();
+            //TwelfthDayPartTwo();
+            //ThirteenthDay();
+            //ThirteenthDay(true);
+            //Calculate(Operation.RSHIFT, new List<ushort> {1674, 5});
+            Console.ReadLine();
         }
+
+        #region DayThirteen
+
+        private static void ThirteenthDay(bool addMe = false)
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDayThirteen.txt");
+
+            var allPersons = new List<Person>();
+            while ((line = file.ReadLine()) != null)
+            {
+                var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var happy = Convert.ToInt32(parts[3]);
+                happy *= parts[2].Equals("lose") ? -1 : 1;
+                var persons = new List<string>
+                {
+                    parts[0],
+                    parts[parts.Length - 1].Trim('.'),
+                };
+                var i = 0;
+                foreach (var person in persons)
+                {
+                    var personExist = allPersons.FirstOrDefault(p => p.Name.Equals(person));
+                    if (personExist == null)
+                    {
+                        personExist = new Person() {Name = person};
+                        allPersons.Add(personExist);
+                    }
+                    if(i == 0)
+                        personExist.Relations.Add(persons[1], happy);
+
+                    i++;
+                }
+            }
+
+            if (addMe)
+            {
+                var newPerson = new Person {Name = "Araym"};
+                foreach (var person in allPersons)
+                {
+                    person.Relations.Add(newPerson.Name, 0);
+                    newPerson.Relations.Add(person.Name, 0);
+                }
+                allPersons.Add(newPerson);
+            }
+
+            var biggestHappiness = int.MinValue;
+            foreach (var person in allPersons)
+            {
+                Combinations(allPersons, person, new List<string>(), allPersons.Count, 0, ref biggestHappiness);
+            }
+
+            file.Close();
+
+            Console.WriteLine($"Biggest happiness is {biggestHappiness}");
+            
+        }
+
+        private static void Combinations(List<Person> allPersons, Person actualPerson, List<string> sittedPersons, int totalPersons, int totalHappiness, ref int biggestHappiness)
+        {
+            sittedPersons.Add(actualPerson.Name);
+            if (sittedPersons.Count.Equals(totalPersons))
+            {
+                totalHappiness += CountHappiness(actualPerson, allPersons.First(p => p.Name.Equals(sittedPersons[0])));
+
+                if (totalHappiness > biggestHappiness)
+                    biggestHappiness = totalHappiness;
+                return;
+            }
+
+            foreach (var relation in actualPerson.Relations.Where(relation => !sittedPersons.Exists(p => p.Equals(relation.Key))))
+            {                
+                Combinations(allPersons, allPersons.First(p => p.Name.Equals(relation.Key)), sittedPersons.ToList(), totalPersons, totalHappiness + CountHappiness(actualPerson, allPersons.First(p => p.Name.Equals(relation.Key))), ref biggestHappiness);
+            }
+        }
+
+        private static int CountHappiness(Person person1, Person person2)
+        {
+            var happy = person1.Relations[person2.Name];
+            happy += person2.Relations[person1.Name];
+
+            return happy;
+        }
+
+        #endregion
+
+        #region DayTwelve
+
+      
+
+        private static void TwelfthDayPartOne()
+        {
+            var file = new StreamReader("Inputs\\inputDayTwelve.txt");
+
+            var line = file.ReadLine();
+            line = Regex.Replace(line, "\"[A-Za-z1-9]*\"", "");
+            var m = Regex.Matches(line, "-?\\d+");
+            var sum = 0;
+            foreach (Match match in m)
+            {
+                int value;
+                if (int.TryParse(match.Value, out value))
+                    sum += value;
+            }
+
+            file.Close();
+            Console.WriteLine($"Sum is {sum}");
+            
+        }
+
+
+        private static List<StringItem> found;
+        private static List<StringItem> foundCurly;
+
+        private static void TwelfthDayPartTwo()
+        {
+            const string CURLY_BRACKETS = "\\{[^\\{\\}]+\\}";
+            const string BRACKETS = "\\[[^\\[\\]]+\\]";
+            var file = new StreamReader("Inputs\\inputDayTwelve.txt");
+            found = new List<StringItem>();
+            foundCurly = new List<StringItem>();
+            var line = file.ReadLine();
+
+            // Change all [] to guid, because it does not change my result
+            while (Regex.IsMatch(line, BRACKETS))
+            {
+                line = Regex.Replace(line, BRACKETS, m => Replacement(m.Captures[0].Value));
+            }
+
+            var g = Guid.NewGuid();
+            found.Add(new StringItem
+            {
+                Content = line,
+                Guid = g
+            });
+
+            line = g.ToString();
+
+            // Go through every [] to find {} with Red and delete them
+            for (var i = found.Count - 1; i >= 0; i--)
+            {
+                while (Regex.IsMatch(found[i].Content, CURLY_BRACKETS))
+                {
+                    found[i].Content = Regex.Replace(found[i].Content, CURLY_BRACKETS, m => ReplacementCurly(m.Captures[0].Value));
+                }
+                for (var j = foundCurly.Count - 1; j >= 0;j--)
+                {
+                    found[i].Content = Regex.Replace(found[i].Content, foundCurly[j].Guid.ToString(), foundCurly[j].Content);
+                }
+                foundCurly.Clear();
+
+                line = Regex.Replace(line, found[i].Guid.ToString(), found[i].Content);
+            }
+
+            // Just count it, same asi Part 1
+            line = Regex.Replace(line, "\"[A-Za-z1-9]*\"", "");
+            var matches = Regex.Matches(line, "-?\\d+");
+            var sum = 0;
+            foreach (Match match in matches)
+            {
+                int value;
+                if (int.TryParse(match.Value, out value))
+                    sum += value;
+            }
+
+            file.Close();
+            Console.WriteLine($"Sum is {sum}");
+            
+        }
+
+        private static string Replacement(string r)
+        {
+            var guid = Guid.NewGuid();
+
+            found.Add(new StringItem
+            {
+                Content = r,
+                Guid = guid
+            });
+            return string.Format(guid.ToString());
+        }
+
+        private static string ReplacementCurly(string r)
+        {
+            var guid = Guid.NewGuid();
+            var replace = guid.ToString();
+            if (r.Contains("red"))
+                replace = string.Empty;
+            else
+                foundCurly.Add(new StringItem
+                {
+                    Content = r,
+                    Guid = guid
+                });
+            return replace;
+        }
+
+        #endregion
+
+        #region DayEleven
+
+        private static string EleventhDay(string input, bool write = true)
+        {
+            var array = new List<char>(input.ToList());
+            var index = array.Count - 1;
+            while (true)
+            {
+                if (array.Count(i => i.Equals('z')) == array.Count)
+                {
+                    array.Insert(0, 'a');
+                    array.Add('a');
+                    index = 0;
+                }
+
+                if (array[index] != 'z')
+                    array[index] = IterateChar(array[index]);
+                else
+                {
+                    // Go back and check, where i Can iterate
+                    for (int i = index-1;i >= 0; i--)
+                    {
+                        if (array[i] != 'z')
+                        {
+                            array[i] = IterateChar(array[i]);
+                            for (int j = i+1; j < array.Count; j++)
+                            {
+                                array[j] = 'a';
+                            }
+                            index = array.Count - 1;
+                            break;
+                        }
+                    }
+                }
+
+                // Check sequence of three increasing letters
+                var sequnece = 0;
+                for (int i = 1; i < array.Count; i++)
+                {
+                    if (array[i] - array[i - 1] == 1)
+                        sequnece++;
+                    else
+                        sequnece = 0;
+
+                    if (sequnece == 2)
+                        break;
+                }
+
+                // Check doubled letters
+                var doubled = 0;
+                var foundDouble = '-';
+                for (int i = 1; i < array.Count; i++)
+                {
+                    if (array[i] - array[i - 1] == 0 && !array[i-1].Equals(foundDouble))
+                    {
+                        doubled++;
+                        foundDouble = array[i];
+                    }
+
+                    if (doubled == 2)
+                        break;
+                }
+
+
+                if (sequnece == 2 && doubled == 2)
+                    break;
+            }
+
+            var result = new string(array.ToArray());
+            if (write)
+            {
+                Console.WriteLine(result);
+                
+            }
+
+            return result;
+        }
+
+        private static char IterateChar(char actualLetter)
+        {
+            var skipLetters = new List<char> { 'i', 'o', 'l' };
+            do
+            {
+                actualLetter++;
+            } while (skipLetters.Exists(i => i.Equals(actualLetter)));
+
+            return actualLetter;
+        }
+
+        #endregion
 
         #region DayTen
 
@@ -70,7 +369,7 @@ namespace AdventOfCode
             }
 
             Console.WriteLine($"Length of result: {input.Length}");
-            Console.ReadLine();
+            
         }
 
         #endregion
@@ -127,7 +426,7 @@ namespace AdventOfCode
 
             Console.WriteLine($"Shortest distance is {shortestDistance}");
             Console.WriteLine($"Longest distance is {longestDistance}");
-            Console.ReadLine();
+            
         }
 
         private static void Travel(City actualCity, ICollection<string> visitedCities, int totalCities, int distance, ref int shortestDistance, ref int longestDistance)
@@ -171,7 +470,7 @@ namespace AdventOfCode
             file.Close();
 
             Console.WriteLine("" + (stringCount - memoryCount));
-            Console.ReadLine();
+            
         }
 
         private static void EightDayPartTwo()
@@ -200,7 +499,7 @@ namespace AdventOfCode
             file.Close();
 
             Console.WriteLine("" + (stringCount - memoryCount));
-            Console.ReadLine();
+            
         }
 
         #endregion
@@ -256,10 +555,15 @@ namespace AdventOfCode
             }
 
             Computate(knownResults, items);
-            
+            using (StreamWriter outputFile = new StreamWriter("Lucaso.txt"))
+            {
+                foreach (var i in knownResults.OrderBy(i => i.Key))
+                    outputFile.WriteLine(i.Key + "->" + i.Value);
+            }
             file.Close();
+            
             Console.WriteLine($"Signal on wire a is {knownResults["a"]}");
-            Console.ReadLine();
+            
         }
 
         private static void Computate(Dictionary<string, ushort> knownResults, List<Node> items)
@@ -275,6 +579,8 @@ namespace AdventOfCode
                     if (countableItem.KnownChildValue.HasValue)
                         shorts.Add(countableItem.KnownChildValue.Value);
 
+                    if (countableItem.Childs.Exists(i => i.Length == 3))
+                        shorts.Reverse();
                     if (!knownResults.ContainsKey(countableItem.Root))
                         knownResults.Add(countableItem.Root, Calculate(countableItem.Operation, shorts));
 
@@ -356,7 +662,7 @@ namespace AdventOfCode
 
             file.Close();
             Console.WriteLine($"Signal on wire a is {knownResults["a"]}");
-            Console.ReadLine();
+            
         }
 
         #endregion
@@ -410,7 +716,7 @@ namespace AdventOfCode
 
             file.Close();
             Console.WriteLine("" + totalCount);
-            Console.ReadLine();
+            
         }
 
         private static void SixthDayPartTwo()
@@ -467,7 +773,7 @@ namespace AdventOfCode
 
             file.Close();
             Console.WriteLine("" + totalCount);
-            Console.ReadLine();
+            
         }
 
 
@@ -491,7 +797,7 @@ namespace AdventOfCode
             file.Close();
 
             Console.WriteLine("" + countOfNiceStrings);
-            Console.ReadLine();
+            
         }
         
         private static void FifthDayPartTwo()
@@ -541,7 +847,7 @@ namespace AdventOfCode
             }
 
             Console.WriteLine("" + countOfNiceStrings);
-            Console.ReadLine();
+            
         }
 
         #endregion
@@ -559,7 +865,7 @@ namespace AdventOfCode
                 if (result < 8)
                 {
                     Console.WriteLine(i);
-                    Console.ReadLine();
+                    
                     break;
                 }
             } 
@@ -576,7 +882,7 @@ namespace AdventOfCode
                 if (result == 0)
                 {
                     Console.WriteLine(i);
-                    Console.ReadLine();
+                    
                     break;
                 }
             }
@@ -619,7 +925,7 @@ namespace AdventOfCode
             file.Close();
 
             Console.WriteLine(hashSet.Count);
-            Console.ReadLine();
+            
         }
 
         private static void ThirdDayPartTwo()
@@ -662,7 +968,7 @@ namespace AdventOfCode
 
             file.Close();
             Console.WriteLine(hashSet.Count);
-            Console.ReadLine();
+            
         }
 
         #endregion
@@ -701,7 +1007,7 @@ namespace AdventOfCode
             file.Close();
 
             Console.WriteLine(area);
-            Console.ReadLine();
+            
         }
 
         private static void SecondDayPartTwo()
@@ -728,7 +1034,7 @@ namespace AdventOfCode
             file.Close();
 
             Console.WriteLine(length);
-            Console.ReadLine();
+            
         }
 
         #endregion
@@ -758,7 +1064,7 @@ namespace AdventOfCode
             }
             file.Close();
             Console.WriteLine(position);
-            Console.ReadLine();
+            
         }
 
         #endregion

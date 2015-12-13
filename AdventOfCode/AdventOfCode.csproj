@@ -50,12 +50,20 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeventhDay\Node.cs" />
     <Compile Include="SeventhDay\Operation.cs" />
+    <Compile Include="ThirteenthDay\Person.cs" />
+    <Compile Include="TwelfthDay\StringItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Inputs\inputDayThirteen.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\inputDayTwelve.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Inputs\inputDayNine.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
