@@ -3,11 +3,13 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using AdventOfCode.FourteenthDay;
 using AdventOfCode.NinthDay;
 using AdventOfCode.SeventhDay;
 using AdventOfCode.ThirteenthDay;
@@ -43,9 +45,83 @@ namespace AdventOfCode
             //TwelfthDayPartTwo();
             //ThirteenthDay();
             //ThirteenthDay(true);
-            //Calculate(Operation.RSHIFT, new List<ushort> {1674, 5});
+            //FourteenthDayPartOne();
+            //FourteenthDayPartTwo();
             Console.ReadLine();
         }
+
+        #region DayFourteen
+
+        private static void FourteenthDayPartOne()
+        {
+            const int TIME = 2503;
+            string line;
+            var file = new StreamReader("Inputs\\inputDayFourteen.txt");
+            var results = new Dictionary<string, int>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var reindeer = parts[0].Trim();
+                var speed = Convert.ToInt32(parts[3].Trim());
+                var rideTime = Convert.ToInt32(parts[6].Trim());
+                var relaxTime = Convert.ToInt32(parts[parts.Length - 2].Trim());
+
+                var secondsOfRide = 0;
+                var restOfTime = TIME%(rideTime + relaxTime);
+                secondsOfRide = restOfTime > rideTime ? rideTime : restOfTime;
+
+                var cycles = Math.Floor(((decimal)TIME /(rideTime + relaxTime)));
+                secondsOfRide += (int)cycles*rideTime;
+                results.Add(reindeer, secondsOfRide * speed);
+            }
+
+            file.Close();
+            Console.WriteLine($"Biggest distance is {results.Values.OrderByDescending(i => i).ToList()[0]} km");
+        }
+
+        private static void FourteenthDayPartTwo()
+        {
+            const int TIME = 2503;
+            string line;
+            var file = new StreamReader("Inputs\\inputDayFourteen.txt");
+            var reindeers = new List<Reindeer>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                reindeers.Add(new Reindeer
+                {
+                    Name = parts[0].Trim(),
+                    Speed = Convert.ToInt32(parts[3].Trim()),
+                    RideTime = Convert.ToInt32(parts[6].Trim()),
+                    RelaxTime = Convert.ToInt32(parts[parts.Length - 2].Trim())
+                });
+            }
+
+            for (var i = 1; i <= TIME; i++)
+            {
+                reindeers.ForEach(r => r.RideOrRelax(i));
+                var max = int.MinValue;
+                foreach (var reindeer in reindeers.OrderByDescending(r => r.Distance))
+                {
+                    if (max <= reindeer.Distance)
+                    {
+                        max = reindeer.Distance;
+                        reindeer.Points++;
+                    }
+                    else
+                        break;
+                }
+            }
+
+            file.Close();
+            Console.WriteLine($"The most points have {reindeers.OrderByDescending(r => r.Points).First().Name} with {reindeers.OrderByDescending(r => r.Points).First().Points} points");
+        }
+
+        #endregion
+
 
         #region DayThirteen
 

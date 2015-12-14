@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FourteenthDay\Reindeer.cs" />
     <Compile Include="NinthDay\City.cs" />
     <Compile Include="NinthDay\Route.cs" />
     <Compile Include="Program.cs" />
@@ -58,6 +59,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Inputs\inputDayFourteen.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Inputs\inputDayThirteen.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
