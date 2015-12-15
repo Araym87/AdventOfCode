@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using AdventOfCode.FifteenthDay;
 using AdventOfCode.FourteenthDay;
 using AdventOfCode.NinthDay;
 using AdventOfCode.SeventhDay;
@@ -47,8 +48,135 @@ namespace AdventOfCode
             //ThirteenthDay(true);
             //FourteenthDayPartOne();
             //FourteenthDayPartTwo();
+            //FifteenthDayPartOne();
+            //FifteenthDayPartTwo();
             Console.ReadLine();
         }
+
+        #region DayFifteen
+
+        private static void FifteenthDayPartOne()
+        {
+            const int SPOONS = 100;
+            string line;
+            var file = new StreamReader("Inputs\\inputDayFifteen.txt");
+            var ingredients = new List<Ingredient>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                ingredients.Add(new Ingredient
+                {
+                    Name = parts[0].Trim(':'),
+                    Capacity = Convert.ToInt32(parts[2].Trim(',')),
+                    Durability = Convert.ToInt32(parts[4].Trim(',')),
+                    Flavor = Convert.ToInt32(parts[6].Trim(',')),
+                    Texture = Convert.ToInt32(parts[8].Trim(',')),
+                    Calories = Convert.ToInt32(parts[10].Trim()),
+
+                });
+            }
+            var maximum = long.MinValue;
+            for (int ingedientOne = 0; ingedientOne <= SPOONS; ingedientOne++)
+            {
+                for (int ingedientTwo = 0; ingedientTwo <= SPOONS - (ingedientOne); ingedientTwo++)
+                {
+                    for (int ingedientThree = 0; ingedientThree <= SPOONS - (ingedientOne + ingedientTwo); ingedientThree++)
+                    {
+                        var ingredientFour = SPOONS - (ingedientOne + ingedientTwo + ingedientThree);
+
+                        var totalCapacity = ingredients[0].Capacity*ingedientOne + ingredients[1].Capacity * ingedientTwo +
+                                        ingredients[2].Capacity*ingedientThree + ingredients[3].Capacity * ingredientFour;
+
+                        var totalDurability = ingredients[0].Durability * ingedientOne + ingredients[1].Durability * ingedientTwo +
+                                        ingredients[2].Durability * ingedientThree + ingredients[3].Durability * ingredientFour;
+
+                        var totalFlavor = ingredients[0].Flavor * ingedientOne + ingredients[1].Flavor * ingedientTwo +
+                                        ingredients[2].Flavor * ingedientThree + ingredients[3].Flavor * ingredientFour;
+
+                        var totalTexture = ingredients[0].Texture * ingedientOne + ingredients[1].Texture * ingedientTwo +
+                                        ingredients[2].Texture * ingedientThree + ingredients[3].Texture * ingredientFour;
+                        totalTexture = totalTexture < 0 ? 0 : totalTexture;
+                        totalFlavor = totalFlavor < 0 ? 0 : totalFlavor;
+                        totalDurability = totalDurability < 0 ? 0 : totalDurability;
+                        totalCapacity = totalCapacity < 0 ? 0 : totalCapacity;
+
+                        var total = (long) (totalTexture*totalFlavor*totalDurability*totalCapacity);
+                        if (maximum < total)
+                            maximum = total;
+                    }
+                }
+            }
+
+            file.Close();
+            Console.WriteLine($"Maximum score is {maximum}");
+        }
+
+        private static void FifteenthDayPartTwo()
+        {
+            const int SPOONS = 100;
+            string line;
+            var file = new StreamReader("Inputs\\inputDayFifteen.txt");
+            var ingredients = new List<Ingredient>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                ingredients.Add(new Ingredient
+                {
+                    Name = parts[0].Trim(':'),
+                    Capacity = Convert.ToInt32(parts[2].Trim(',')),
+                    Durability = Convert.ToInt32(parts[4].Trim(',')),
+                    Flavor = Convert.ToInt32(parts[6].Trim(',')),
+                    Texture = Convert.ToInt32(parts[8].Trim(',')),
+                    Calories = Convert.ToInt32(parts[10].Trim()),
+
+                });
+            }
+            var maximum = long.MinValue;
+            for (var ingedientOne = 0; ingedientOne <= SPOONS; ingedientOne++)
+            {
+                for (var ingedientTwo = 0; ingedientTwo <= SPOONS - (ingedientOne); ingedientTwo++)
+                {
+                    for (var ingedientThree = 0; ingedientThree <= SPOONS - (ingedientOne + ingedientTwo); ingedientThree++)
+                    {
+                        var ingredientFour = SPOONS - (ingedientOne + ingedientTwo + ingedientThree);
+                        var totalCalories = ingredients[0].Calories * ingedientOne + ingredients[1].Calories * ingedientTwo +
+                                        ingredients[2].Calories * ingedientThree + ingredients[3].Calories * ingredientFour;
+
+                        if (totalCalories != 500)
+                            continue;
+
+                        var totalCapacity = ingredients[0].Capacity * ingedientOne + ingredients[1].Capacity * ingedientTwo +
+                                        ingredients[2].Capacity * ingedientThree + ingredients[3].Capacity * ingredientFour;
+
+                        var totalDurability = ingredients[0].Durability * ingedientOne + ingredients[1].Durability * ingedientTwo +
+                                        ingredients[2].Durability * ingedientThree + ingredients[3].Durability * ingredientFour;
+
+                        var totalFlavor = ingredients[0].Flavor * ingedientOne + ingredients[1].Flavor * ingedientTwo +
+                                        ingredients[2].Flavor * ingedientThree + ingredients[3].Flavor * ingredientFour;
+
+                        var totalTexture = ingredients[0].Texture * ingedientOne + ingredients[1].Texture * ingedientTwo +
+                                        ingredients[2].Texture * ingedientThree + ingredients[3].Texture * ingredientFour;
+
+                        totalTexture = totalTexture < 0 ? 0 : totalTexture;
+                        totalFlavor = totalFlavor < 0 ? 0 : totalFlavor;
+                        totalDurability = totalDurability < 0 ? 0 : totalDurability;
+                        totalCapacity = totalCapacity < 0 ? 0 : totalCapacity;
+                        totalCalories = totalCalories < 0 ? 0 : totalCalories;
+
+                        var total = (long)(totalTexture * totalFlavor * totalDurability * totalCapacity);
+                        if (maximum < total)
+                            maximum = total;
+                    }
+                }
+            }
+
+            file.Close();
+            Console.WriteLine($"Maximum score is {maximum}, while calories equals 500");
+        }
+
+        #endregion
 
         #region DayFourteen
 
