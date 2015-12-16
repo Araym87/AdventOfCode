@@ -13,6 +13,7 @@ using AdventOfCode.FifteenthDay;
 using AdventOfCode.FourteenthDay;
 using AdventOfCode.NinthDay;
 using AdventOfCode.SeventhDay;
+using AdventOfCode.SixteenthDay;
 using AdventOfCode.ThirteenthDay;
 using AdventOfCode.TwelfthDay;
 
@@ -50,8 +51,95 @@ namespace AdventOfCode
             //FourteenthDayPartTwo();
             //FifteenthDayPartOne();
             //FifteenthDayPartTwo();
+            //SixteenthDayPartOne();
+            //SixteenthDayPartTwo();
             Console.ReadLine();
         }
+
+        #region DaySixteenth
+
+        private static void SixteenthDayPartOne()
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDaySixteen.txt");
+            var sue = new Aunt("Sue")
+            {
+                Children = 3,
+                Cats = 7,
+                Samoyeds = 2,
+                Pomeranians = 3,
+                Akitas = 0,
+                Vizslas = 0,
+                Goldfish = 5,
+                Trees = 3,
+                Cars = 2,
+                Perfumes = 1
+            };
+
+            Aunt foundAunt = null;
+
+            while ((line = file.ReadLine()) != null)
+            {
+                var parts = line.Split(new[] { ':' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                var aunt = new Aunt(parts[0].Trim(':'));
+                
+                parts = parts[1].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var items in parts.Select(part => part.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries)))
+                {
+                    aunt.SetValue(items[0].Trim(), Convert.ToInt32(items[1].Trim()));
+                }
+                if (!aunt.IsEqualPartOne(sue)) continue;
+
+                foundAunt = aunt;
+                break;
+            }
+
+            file.Close();
+            Console.WriteLine(foundAunt == null ? "Not Found" : $"Real aunt is {foundAunt.Name}");
+        }
+
+        private static void SixteenthDayPartTwo()
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDaySixteen.txt");
+            var sue = new Aunt("Sue")
+            {
+                Children = 3,
+                Cats = 7,
+                Samoyeds = 2,
+                Pomeranians = 3,
+                Akitas = 0,
+                Vizslas = 0,
+                Goldfish = 5,
+                Trees = 3,
+                Cars = 2,
+                Perfumes = 1
+            };
+
+            Aunt foundAunt = null;
+
+            while ((line = file.ReadLine()) != null)
+            {
+                var parts = line.Split(new[] { ':' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                var aunt = new Aunt(parts[0].Trim(':'));
+
+                parts = parts[1].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var items in parts.Select(part => part.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries)))
+                {
+                    aunt.SetValue(items[0].Trim(), Convert.ToInt32(items[1].Trim()));
+                }
+
+                if (!aunt.IsEqualPartTwo(sue)) continue;
+
+                foundAunt = aunt;
+                break;
+            }
+
+            file.Close();
+            Console.WriteLine(foundAunt == null ? "Not Found" : $"Real aunt is {foundAunt.Name}");
+        }
+
+        #endregion
 
         #region DayFifteen
 
