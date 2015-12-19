@@ -53,8 +53,223 @@ namespace AdventOfCode
             //FifteenthDayPartTwo();
             //SixteenthDayPartOne();
             //SixteenthDayPartTwo();
+            //SeventeenthDayPartOne();
+            //SeventeenthDayPartTwo();
+            //EighteentDayPartOne();
+            //EighteentDayPartTwo();
             Console.ReadLine();
         }
+
+        #region DayEighteenth
+
+        private static void EighteentDayPartOne()
+        {
+            const int gridSize = 100;
+            string line;
+            var file = new StreamReader("Inputs\\inputDayEighteenth.txt");
+            var grid = new ushort[gridSize, gridSize];
+
+            var row = 0;
+            while ((line = file.ReadLine()) != null)
+            {
+                var column = 0;
+                foreach (var letter in line.Trim())
+                {
+                    if (letter.Equals('#'))
+                        grid[row,column] = 1;
+
+                    column++;
+                }
+                row++;
+            }
+
+            for (var loop = 0; loop < 100; loop++)
+            {
+                var nextGrid = new ushort[gridSize, gridSize];        
+                for (var i = 0; i < gridSize; i++)
+                {
+                    for (var j = 0; j < gridSize; j++)
+                    {
+                        var neighboorsOn = 0;
+                        for (var rowDiff = i - 1; rowDiff < gridSize && rowDiff <= i + 1; rowDiff++)
+                        {
+                            if(rowDiff < 0)
+                                continue;
+                            for (var columnDiff = j - 1; columnDiff < gridSize && columnDiff <= j + 1; columnDiff++)
+                            {
+                                if(columnDiff < 0 || (rowDiff == i && columnDiff == j))
+                                    continue;
+
+                                if (grid[rowDiff, columnDiff] == 1)
+                                    neighboorsOn++;
+                            }
+                        }
+                        if (grid[i, j] == 1 && (neighboorsOn == 2 || neighboorsOn == 3))
+                            nextGrid[i, j] = 1;
+
+                        if (grid[i, j] == 0 && neighboorsOn == 3)
+                            nextGrid[i, j] = 1;
+                    }
+                }
+                grid = nextGrid;
+            }
+
+            var count = grid.Cast<ushort>().Count(@ushort => @ushort == 1);
+
+            Console.WriteLine($"Number of lights on is {count}");
+        }
+
+        private static void EighteentDayPartTwo()
+        {
+            const int gridSize = 100;
+            string line;
+            var file = new StreamReader("Inputs\\inputDayEighteenth.txt");
+            var grid = new ushort[gridSize, gridSize];
+
+            var row = 0;
+            while ((line = file.ReadLine()) != null)
+            {
+                var column = 0;
+                foreach (var letter in line.Trim())
+                {
+                    if (letter.Equals('#'))
+                        grid[row, column] = 1;
+
+                    column++;
+                }
+                row++;
+            }
+            grid[0, 0] = 1;
+            grid[0, gridSize - 1] = 1;
+            grid[gridSize - 1, 0] = 1;
+            grid[gridSize - 1, gridSize - 1] = 1;
+
+            for (var loop = 0; loop < 100; loop++)
+            {
+                var nextGrid = new ushort[gridSize, gridSize];
+                for (var i = 0; i < gridSize; i++)
+                {
+                    for (var j = 0; j < gridSize; j++)
+                    {
+                        var neighboorsOn = 0;
+                        for (var rowDiff = i - 1; rowDiff < gridSize && rowDiff <= i + 1; rowDiff++)
+                        {
+                            if (rowDiff < 0)
+                                continue;
+                            for (var columnDiff = j - 1; columnDiff < gridSize && columnDiff <= j + 1; columnDiff++)
+                            {
+                                if (columnDiff < 0 || (rowDiff == i && columnDiff == j))
+                                    continue;
+
+                                if (grid[rowDiff, columnDiff] == 1)
+                                    neighboorsOn++;
+                            }
+                        }
+                        if (grid[i, j] == 1 && (neighboorsOn == 2 || neighboorsOn == 3))
+                            nextGrid[i, j] = 1;
+
+                        if (grid[i, j] == 0 && neighboorsOn == 3)
+                            nextGrid[i, j] = 1;
+                    }
+                }
+                nextGrid[0, 0] = 1;
+                nextGrid[0, gridSize - 1] = 1;
+                nextGrid[gridSize - 1, 0] = 1;
+                nextGrid[gridSize - 1, gridSize - 1] = 1;
+                grid = nextGrid;
+            }
+
+            var count = grid.Cast<ushort>().Count(@ushort => @ushort == 1);
+            Console.WriteLine($"Number of lights on is {count}");
+        }
+
+        #endregion
+
+        #region DaySeventeenth
+
+        private static void SeventeenthDayPartOne()
+        {
+            const int EGG_NOG = 150;
+            string line;
+            var file = new StreamReader("Inputs\\inputDaySeventeen.txt");
+            var containers = new List<int>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                containers.Add(Convert.ToInt32(line.Trim()));
+            }
+
+            var count = 0;
+            int? minCount = null;
+            containers = containers.OrderBy(i => i).ToList();
+            SeventeenthRecursion(EGG_NOG, containers, new List<int> (), 0, ref count, ref minCount);
+
+
+            file.Close();
+            Console.WriteLine($"Number of combinations {count}");
+        }
+
+        private static void SeventeenthDayPartTwo()
+        {
+            const int EGG_NOG = 150;
+            string line;
+            var file = new StreamReader("Inputs\\inputDaySeventeen.txt");
+            var containers = new List<int>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                containers.Add(Convert.ToInt32(line.Trim()));
+            }
+
+            var count = 0;
+            int? minCount = int.MaxValue;
+            containers = containers.OrderBy(i => i).ToList();
+            SeventeenthRecursion(EGG_NOG, containers, new List<int>(), 0, ref count, ref minCount);
+
+
+            file.Close();
+            Console.WriteLine($"Number of combinations {count}");
+        }
+
+        private static void SeventeenthRecursion(int equalityNumber, List<int> restOfContainers, List<int> usedNumbers, int sum, ref int count, ref int? minCount)
+        {
+            if (sum > equalityNumber)
+                return;
+            if (sum == equalityNumber)
+            {
+                if (minCount != null)
+                {
+                    if (usedNumbers.Count == minCount)
+                        count++;
+
+                    if (usedNumbers.Count < minCount)
+                    {
+                        minCount = usedNumbers.Count;
+                        count = 1;
+                    }
+                }
+                else
+                    count++;
+
+                return;
+            }
+
+            for (var i = 0; i < restOfContainers.Count; i++)
+            {
+                var items = usedNumbers.ToList();
+                items.Add(restOfContainers[i]);
+                var partSum = sum + restOfContainers[i];
+                var containersInNextStep = new List<int>();
+                for (var j = i + 1; j < restOfContainers.Count; j++)
+                {
+                    containersInNextStep.Add(restOfContainers[j]);
+                }
+                SeventeenthRecursion(equalityNumber, containersInNextStep, items, partSum, ref count, ref minCount);
+            }
+
+        }
+
+        #endregion
 
         #region DaySixteenth
 
