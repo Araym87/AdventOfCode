@@ -23,50 +23,143 @@ namespace AdventOfCode
     { 
         static void Main(string[] args)
         {
-            //FirstDay();
-            //SecondDayPartOne();
-            //SecondDayPartTwo();
-            //ThirdDayPartOne();
-            //ThirdDayPartTwo();
-            //FourthDayPartOne();
-            //FourthDayPartTwo();
-            //FifthDayPartOne();
-            //FifthDayPartTwo();
-            //SixthDayPartOne();
-            //SixthDayPartTwo();
-            //SeventhDayPartOne();
-            //SeventhDayPartTwo();
-            //EightDayPartOne();
-            //EightDayPartTwo();
-            //NinthDay();
-            //TenthDay(40);
-            //TenthDay(50);
-            //EleventhDay("cqjxjnds");
-            //EleventhDay(EleventhDay("cqjxjnds", false));
-            //TwelfthDayPartOne();
-            //TwelfthDayPartTwo();
-            //ThirteenthDay();
-            //ThirteenthDay(true);
-            //FourteenthDayPartOne();
-            //FourteenthDayPartTwo();
-            //FifteenthDayPartOne();
-            //FifteenthDayPartTwo();
-            //SixteenthDayPartOne();
-            //SixteenthDayPartTwo();
-            //SeventeenthDayPartOne();
-            //SeventeenthDayPartTwo();
-            //EighteentDayPartOne();
-            //EighteentDayPartTwo();
+            //Day1();
+            //Day2PartOne();
+            //Day2PartTwo();
+            //Day3PartOne();
+            //Day3PartTwo();
+            //Day4PartOne();
+            //Day4PartTwo();
+            //Day5PartOne();
+            //Day5PartTwo();
+            //Day6PartOne();
+            //Day6PartTwo();
+            //Day7PartOne();
+            //Day7PartTwo();
+            //Day8PartOne();
+            //Day8PartTwo();
+            //Day9();
+            //Day10(40);
+            //Day10(50);
+            //Day11("cqjxjnds");
+            //Day11(Day11("cqjxjnds", false));
+            //Day12PartOne();
+            //Day12PartTwo();
+            //Day13();
+            //Day13(true);
+            //Day14PartOne();
+            //Day14PartTwo();
+            //Day15PartOne();
+            //Day15PartTwo();
+            //Day16PartOne();
+            //Day16PartTwo();
+            //Day17PartOne();
+            //Day17PartTwo();
+            //Day18PartOne();
+            //Day18PartTwo();
+            //Day19PartOne();
+            //Day19PartTwo();
             Console.ReadLine();
         }
 
-        #region DayEighteenth
+        #region Day19
 
-        private static void EighteentDayPartOne()
+        private static void Day19PartOne()
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDay19.txt");
+            var replacements = new List<KeyValuePair<string, string>>();
+            var inputMolecule = string.Empty;
+            var uniqueMolecules = new HashSet<string>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                if(string.IsNullOrEmpty(line))
+                    continue;
+
+                if (line.Contains("=>"))
+                {
+                    var parts = line.Split(new[] {"=>"}, StringSplitOptions.RemoveEmptyEntries);
+                    replacements.Add(new KeyValuePair<string, string>(parts[0].Trim(), parts[1].Trim()));
+                }
+                else
+                {
+                    inputMolecule = line;
+                }
+            }
+
+            foreach (var replacement in replacements)
+            {
+                var matches = Regex.Matches(inputMolecule, replacement.Key);
+                foreach (Match match in matches)
+                {
+                    var item = inputMolecule.Remove(match.Index, match.Length);
+                    item = item.Insert(match.Index, replacement.Value);
+                    uniqueMolecules.Add(item);
+                }
+                
+            }
+
+            file.Close();
+            Console.WriteLine($"Number of uniques molecules {uniqueMolecules.Count}");
+        }
+
+        private static void Day19PartTwo()
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDay19.txt");
+            var replacements = new List<KeyValuePair<string, string>>();
+            var inputMolecule = string.Empty;
+            var outputMolecule = "e";
+            var uniqueMolecules = new HashSet<string>();
+            
+
+            while ((line = file.ReadLine()) != null)
+            {
+                if (string.IsNullOrEmpty(line))
+                    continue;
+
+                if (line.Contains("=>"))
+                {
+                    var parts = line.Split(new[] { "=>" }, StringSplitOptions.RemoveEmptyEntries);
+                    replacements.Add(new KeyValuePair<string, string>(parts[1].Trim(), parts[0].Trim()));                    
+                }
+                else
+                {
+                    inputMolecule = line;
+                }
+            }
+            uniqueMolecules.Add(inputMolecule);
+            var steps = 0;
+            // Bullshit! Works only for current data
+            while (!inputMolecule.Equals(outputMolecule))
+            {
+                foreach (var replacement in replacements)
+                {
+                    var matches = Regex.Matches(inputMolecule, replacement.Key);
+                    foreach (Match match in matches)
+                    {
+                        steps++;
+                        inputMolecule = inputMolecule.Remove(match.Index, match.Length).Insert(match.Index, replacement.Value);
+                        break;
+                    }
+
+                }
+            }
+
+            file.Close();
+            Console.WriteLine($"Number of steps {steps}");
+        }
+
+        #endregion
+
+        #region Day18
+
+        private static void Day18PartOne()
         {
             const int gridSize = 100;
             string line;
-            var file = new StreamReader("Inputs\\inputDayEighteenth.txt");
+            var file = new StreamReader("Inputs\\inputDay18.txt");
             var grid = new ushort[gridSize, gridSize];
 
             var row = 0;
@@ -119,11 +212,11 @@ namespace AdventOfCode
             Console.WriteLine($"Number of lights on is {count}");
         }
 
-        private static void EighteentDayPartTwo()
+        private static void Day18PartTwo()
         {
             const int gridSize = 100;
             string line;
-            var file = new StreamReader("Inputs\\inputDayEighteenth.txt");
+            var file = new StreamReader("Inputs\\inputDay18.txt");
             var grid = new ushort[gridSize, gridSize];
 
             var row = 0;
@@ -185,13 +278,13 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DaySeventeenth
+        #region Day17
 
-        private static void SeventeenthDayPartOne()
+        private static void Day17PartOne()
         {
             const int EGG_NOG = 150;
             string line;
-            var file = new StreamReader("Inputs\\inputDaySeventeen.txt");
+            var file = new StreamReader("Inputs\\inputDay17.txt");
             var containers = new List<int>();
 
             while ((line = file.ReadLine()) != null)
@@ -209,11 +302,11 @@ namespace AdventOfCode
             Console.WriteLine($"Number of combinations {count}");
         }
 
-        private static void SeventeenthDayPartTwo()
+        private static void Day17PartTwo()
         {
             const int EGG_NOG = 150;
             string line;
-            var file = new StreamReader("Inputs\\inputDaySeventeen.txt");
+            var file = new StreamReader("Inputs\\inputDay17.txt");
             var containers = new List<int>();
 
             while ((line = file.ReadLine()) != null)
@@ -271,12 +364,12 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DaySixteenth
+        #region Day16
 
-        private static void SixteenthDayPartOne()
+        private static void Day16PartOne()
         {
             string line;
-            var file = new StreamReader("Inputs\\inputDaySixteen.txt");
+            var file = new StreamReader("Inputs\\inputDay16.txt");
             var sue = new Aunt("Sue")
             {
                 Children = 3,
@@ -313,10 +406,10 @@ namespace AdventOfCode
             Console.WriteLine(foundAunt == null ? "Not Found" : $"Real aunt is {foundAunt.Name}");
         }
 
-        private static void SixteenthDayPartTwo()
+        private static void Day16PartTwo()
         {
             string line;
-            var file = new StreamReader("Inputs\\inputDaySixteen.txt");
+            var file = new StreamReader("Inputs\\inputDay16.txt");
             var sue = new Aunt("Sue")
             {
                 Children = 3,
@@ -356,13 +449,13 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DayFifteen
+        #region Day15
 
-        private static void FifteenthDayPartOne()
+        private static void Day15PartOne()
         {
             const int SPOONS = 100;
             string line;
-            var file = new StreamReader("Inputs\\inputDayFifteen.txt");
+            var file = new StreamReader("Inputs\\inputDay15.txt");
             var ingredients = new List<Ingredient>();
 
             while ((line = file.ReadLine()) != null)
@@ -415,11 +508,11 @@ namespace AdventOfCode
             Console.WriteLine($"Maximum score is {maximum}");
         }
 
-        private static void FifteenthDayPartTwo()
+        private static void Day15PartTwo()
         {
             const int SPOONS = 100;
             string line;
-            var file = new StreamReader("Inputs\\inputDayFifteen.txt");
+            var file = new StreamReader("Inputs\\inputDay15.txt");
             var ingredients = new List<Ingredient>();
 
             while ((line = file.ReadLine()) != null)
@@ -481,13 +574,13 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DayFourteen
+        #region Day14
 
-        private static void FourteenthDayPartOne()
+        private static void Day14PartOne()
         {
             const int TIME = 2503;
             string line;
-            var file = new StreamReader("Inputs\\inputDayFourteen.txt");
+            var file = new StreamReader("Inputs\\inputDay14.txt");
             var results = new Dictionary<string, int>();
 
             while ((line = file.ReadLine()) != null)
@@ -511,11 +604,11 @@ namespace AdventOfCode
             Console.WriteLine($"Biggest distance is {results.Values.OrderByDescending(i => i).ToList()[0]} km");
         }
 
-        private static void FourteenthDayPartTwo()
+        private static void Day14PartTwo()
         {
             const int TIME = 2503;
             string line;
-            var file = new StreamReader("Inputs\\inputDayFourteen.txt");
+            var file = new StreamReader("Inputs\\inputDay14.txt");
             var reindeers = new List<Reindeer>();
 
             while ((line = file.ReadLine()) != null)
@@ -554,12 +647,12 @@ namespace AdventOfCode
         #endregion
 
 
-        #region DayThirteen
+        #region Day13
 
-        private static void ThirteenthDay(bool addMe = false)
+        private static void Day13(bool addMe = false)
         {
             string line;
-            var file = new StreamReader("Inputs\\inputDayThirteen.txt");
+            var file = new StreamReader("Inputs\\inputDay13.txt");
 
             var allPersons = new List<Person>();
             while ((line = file.ReadLine()) != null)
@@ -639,13 +732,11 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DayTwelve
+        #region Day12
 
-      
-
-        private static void TwelfthDayPartOne()
+        private static void Day12PartOne()
         {
-            var file = new StreamReader("Inputs\\inputDayTwelve.txt");
+            var file = new StreamReader("Inputs\\inputDay12.txt");
 
             var line = file.ReadLine();
             line = Regex.Replace(line, "\"[A-Za-z1-9]*\"", "");
@@ -667,11 +758,11 @@ namespace AdventOfCode
         private static List<StringItem> found;
         private static List<StringItem> foundCurly;
 
-        private static void TwelfthDayPartTwo()
+        private static void Day12PartTwo()
         {
             const string CURLY_BRACKETS = "\\{[^\\{\\}]+\\}";
             const string BRACKETS = "\\[[^\\[\\]]+\\]";
-            var file = new StreamReader("Inputs\\inputDayTwelve.txt");
+            var file = new StreamReader("Inputs\\inputDay12.txt");
             found = new List<StringItem>();
             foundCurly = new List<StringItem>();
             var line = file.ReadLine();
@@ -752,9 +843,9 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DayEleven
+        #region Day11
 
-        private static string EleventhDay(string input, bool write = true)
+        private static string Day11(string input, bool write = true)
         {
             var array = new List<char>(input.ToList());
             var index = array.Count - 1;
@@ -843,9 +934,9 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DayTen
+        #region Day10
 
-        private static void TenthDay(int iterations)
+        private static void Day10(int iterations)
         {
             var input = "3113322113";
 
@@ -881,12 +972,12 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DayNine
+        #region Day9
 
-        private static void NinthDay()
+        private static void Day9()
         {
             string line;
-            var file = new StreamReader("Inputs\\inputDayNine.txt");
+            var file = new StreamReader("Inputs\\inputDay9.txt");
 
             var cities = new List<City>();
             while ((line = file.ReadLine()) != null)
@@ -959,12 +1050,12 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DayEight
+        #region Day8
 
-        private static void EightDayPartOne()
+        private static void Day8PartOne()
         {
             string line;
-            var file = new StreamReader("Inputs\\inputDayEight.txt");
+            var file = new StreamReader("Inputs\\inputDay8.txt");
 
             var stringCount = 0;
             var memoryCount = 0;
@@ -980,10 +1071,10 @@ namespace AdventOfCode
             
         }
 
-        private static void EightDayPartTwo()
+        private static void Day8PartTwo()
         {
             string line;
-            var file = new StreamReader("Inputs\\inputDayEight.txt");
+            var file = new StreamReader("Inputs\\inputDay8.txt");
 
             var stringCount = 0;
             var memoryCount = 0;
@@ -1011,13 +1102,13 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DaySeven
+        #region Day7
 
-        private static void SeventhDayPartOne()
+        private static void Day7PartOne()
         {
             var operations = Enum.GetValues(typeof(Operation)).Cast<Operation>().ToList();
             string line;
-            var file = new StreamReader("Inputs\\inputDaySeven.txt");
+            var file = new StreamReader("Inputs\\inputDay7.txt");
             var items = new List<Node>();
             var knownResults = new Dictionary<string, ushort>();
 
@@ -1062,11 +1153,6 @@ namespace AdventOfCode
             }
 
             Computate(knownResults, items);
-            using (StreamWriter outputFile = new StreamWriter("Lucaso.txt"))
-            {
-                foreach (var i in knownResults.OrderBy(i => i.Key))
-                    outputFile.WriteLine(i.Key + "->" + i.Value);
-            }
             file.Close();
             
             Console.WriteLine($"Signal on wire a is {knownResults["a"]}");
@@ -1111,11 +1197,11 @@ namespace AdventOfCode
             return 0;
         }
 
-        private static void SeventhDayPartTwo()
+        private static void Day7PartTwo()
         {
             var operations = Enum.GetValues(typeof(Operation)).Cast<Operation>().ToList();
             string line;
-            var file = new StreamReader("Inputs\\inputDaySeven.txt");
+            var file = new StreamReader("Inputs\\inputDay7.txt");
             var items = new List<Node>();
             var knownResults = new Dictionary<string, ushort>();
 
@@ -1174,12 +1260,12 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DaySix
+        #region Day6
 
-        private static void SixthDayPartOne()
+        private static void Day6PartOne()
         {
             string line;
-            var file = new StreamReader("Inputs\\inputDaySix.txt");
+            var file = new StreamReader("Inputs\\inputDay6.txt");
             var lights = new bool[1000,1000];
             
             while ((line = file.ReadLine()) != null)
@@ -1226,10 +1312,10 @@ namespace AdventOfCode
             
         }
 
-        private static void SixthDayPartTwo()
+        private static void Day6PartTwo()
         {
             string line;
-            var file = new StreamReader("Inputs\\inputDaySix.txt");
+            var file = new StreamReader("Inputs\\inputDay6.txt");
             var lights = new int[1000, 1000];
 
             while ((line = file.ReadLine()) != null)
@@ -1286,12 +1372,12 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DayFive
+        #region Day5
 
-        private static void FifthDayPartOne()
+        private static void Day5PartOne()
         {
             string line;
-            var file = new StreamReader("Inputs\\inputDayFive.txt");
+            var file = new StreamReader("Inputs\\inputDay5.txt");
             var countOfNiceStrings = 0;
             while ((line = file.ReadLine()) != null)
             {
@@ -1307,10 +1393,10 @@ namespace AdventOfCode
             
         }
         
-        private static void FifthDayPartTwo()
+        private static void Day5PartTwo()
         {
             string line;
-            var file = new StreamReader("Inputs\\inputDayFive.txt");
+            var file = new StreamReader("Inputs\\inputDay5.txt");
             var countOfNiceStrings = 0;
             var first = 0;
             var second = 0;
@@ -1359,9 +1445,9 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DayFour
+        #region Day4
 
-        private static void FourthDayPartOne()
+        private static void Day4PartOne()
         {
             const string input = "bgvyzdsv";
             var mdAlgorithm = MD5.Create();
@@ -1378,7 +1464,7 @@ namespace AdventOfCode
             } 
         }
 
-        private static void FourthDayPartTwo()
+        private static void Day4PartTwo()
         {
             const string input = "bgvyzdsv";
             var mdAlgorithm = MD5.Create();
@@ -1397,13 +1483,13 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DayThree
+        #region Day3
 
-        private static void ThirdDayPartOne()
+        private static void Day3PartOne()
         {
             var hashSet = new HashSet<Point> {new Point(0, 0)};
             string line;
-            var file = new StreamReader("Inputs\\inputDayThree.txt");
+            var file = new StreamReader("Inputs\\inputDay3.txt");
             var actualPosition = new Point(0,0);
             while ((line = file.ReadLine()) != null)
             {
@@ -1435,11 +1521,11 @@ namespace AdventOfCode
             
         }
 
-        private static void ThirdDayPartTwo()
+        private static void Day3PartTwo()
         {
             var hashSet = new HashSet<Point> {new Point(0, 0)};
             string line;
-            var file = new StreamReader("Inputs\\inputDayThree.txt");
+            var file = new StreamReader("Inputs\\inputDay3.txt");
 
             var santas = new []
             {
@@ -1480,12 +1566,12 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DayTwo
+        #region Day2
 
-        private static void SecondDayPartOne()
+        private static void Day2PartOne()
         {
             string line;
-            var file = new StreamReader("Inputs\\inputDayTwo.txt");
+            var file = new StreamReader("Inputs\\inputDay2.txt");
             var area = 0;
             while ((line = file.ReadLine()) != null)
             {
@@ -1517,10 +1603,10 @@ namespace AdventOfCode
             
         }
 
-        private static void SecondDayPartTwo()
+        private static void Day2PartTwo()
         {
             string line;
-            var file = new StreamReader("Inputs\\inputDayTwo.txt");
+            var file = new StreamReader("Inputs\\inputDay2.txt");
             var length = 0;
             while ((line = file.ReadLine()) != null)
             {
@@ -1546,12 +1632,12 @@ namespace AdventOfCode
 
         #endregion
 
-        #region DayOne
+        #region Day1
 
-        private static void FirstDay()
+        private static void Day1()
         {
             string line;
-            var file = new StreamReader("Inputs\\inputDayOne.txt");
+            var file = new StreamReader("Inputs\\inputDay1.txt");
             var position = 1;
             var floor = 0;
             while ((line = file.ReadLine()) != null)

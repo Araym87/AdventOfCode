@@ -44,66 +44,69 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FifteenthDay\Ingredient.cs" />
-    <Compile Include="FourteenthDay\Reindeer.cs" />
-    <Compile Include="NinthDay\City.cs" />
-    <Compile Include="NinthDay\Route.cs" />
+    <Compile Include="Day15\Ingredient.cs" />
+    <Compile Include="Day14\Reindeer.cs" />
+    <Compile Include="Day9\City.cs" />
+    <Compile Include="Day9\Route.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SeventhDay\Node.cs" />
-    <Compile Include="SeventhDay\Operation.cs" />
-    <Compile Include="SixteenthDay\Aunt.cs" />
-    <Compile Include="ThirteenthDay\Person.cs" />
-    <Compile Include="TwelfthDay\StringItem.cs" />
+    <Compile Include="Day7\Node.cs" />
+    <Compile Include="Day7\Operation.cs" />
+    <Compile Include="Day16\Aunt.cs" />
+    <Compile Include="Day13\Person.cs" />
+    <Compile Include="Day12\StringItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Inputs\inputDayEighteenth.txt">
+    <Content Include="Inputs\inputDay19.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDaySixteen.txt">
+    <Content Include="Inputs\inputDay18.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDayFifteen.txt">
+    <Content Include="Inputs\inputDay16.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDayFourteen.txt">
+    <Content Include="Inputs\inputDay15.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDayThirteen.txt">
+    <Content Include="Inputs\inputDay14.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDayTwelve.txt">
+    <Content Include="Inputs\inputDay13.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDayNine.txt">
+    <Content Include="Inputs\inputDay12.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDayEight.txt">
+    <Content Include="Inputs\inputDay9.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDaySeven.txt">
+    <Content Include="Inputs\inputDay8.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDaySix.txt">
+    <Content Include="Inputs\inputDay7.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDayFive.txt">
+    <Content Include="Inputs\inputDay6.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDayThree.txt">
+    <Content Include="Inputs\inputDay5.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDayOne.txt">
+    <Content Include="Inputs\inputDay3.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDaySeventeen.txt">
+    <Content Include="Inputs\inputDay1.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Inputs\inputDayTwo.txt">
+    <Content Include="Inputs\inputDay17.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\inputDay2.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
