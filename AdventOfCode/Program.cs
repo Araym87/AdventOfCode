@@ -59,8 +59,145 @@ namespace AdventOfCode
             //Day18PartTwo();
             //Day19PartOne();
             //Day19PartTwo();
+            //Day20PartOne();
+            //Day20PartTwo();
             Console.ReadLine();
         }
+
+        #region Day20
+
+        private static void Day20PartOne()
+        {
+            const int SUM = 36000000;
+            var primes = ErasthetonovoSito(10000000);
+            var house = 800000;
+
+            var max = int.MinValue;
+            while (true)
+            {
+                var list = PrimeDecomposition(house, primes.Where(i => i < house / 2).ToList());
+                var sum = list.Sum()*10;
+                if (SUM <= sum)
+                {
+                    Console.WriteLine($"The lowest house number is {house}");
+                    break;
+                }
+                if (sum > max)
+                    max = sum;
+                house+=100;
+            }
+        }
+
+        private static void Day20PartTwo()
+        {
+            const int SUM = 36000000;
+            var primes = ErasthetonovoSito(10000000);
+            var house = 800000;
+
+            var max = int.MinValue;
+            while (true)
+            {
+                var list = PrimeDecomposition(house, primes.Where(i => i < house / 2).ToList());
+                list = list.Where(i => i*50 >= house).ToList();
+
+                var sum = list.Sum() * 11;
+                if (SUM <= sum)
+                {
+                    Console.WriteLine($"The lowest house number is {house}");
+                    break;
+                }
+                if (sum > max)
+                    max = sum;
+                house+=10;
+            }
+        }
+
+        private static List<int> PrimeDecomposition(int number, List<int> primes)
+        {
+            var primesDecomposition = new List<int>();
+            var tempNumber = number;
+            foreach (var prime in primes)
+            {
+                while (tempNumber % prime == 0)
+                {
+                    primesDecomposition.Add(prime);
+                    tempNumber /= prime;
+                }
+            }
+            if (tempNumber != 1)
+                primesDecomposition.Add(number);
+
+            var groups = primesDecomposition.GroupBy(i => i);
+            var decompositionGroups = new List<List<int>>();
+            foreach (var @group in groups)
+            {
+                var items = new List<int>();
+                for (var i = 1; i <= @group.Count(); i++)
+                {
+                    items.Add((int)Math.Pow(@group.Key, i));
+                }
+                decompositionGroups.Add(items);
+            }
+            var decomposition = new HashSet<int>();
+            for (int i = 0; i < decompositionGroups.Count - 1; i++)
+            {
+                var items = new HashSet<int>();
+                decompositionGroups[i].ForEach(num => items.Add(num));
+                for (int j = 0; j < decompositionGroups[i].Count; j++)
+                {
+                    for (int k = 0; k < decompositionGroups[i + 1].Count; k++)
+                    {
+                        items.Add(decompositionGroups[i][j] * decompositionGroups[i + 1][k]);
+                        items.Add(decompositionGroups[i + 1][k]);
+                    }  
+                }
+                decompositionGroups[i] = items.ToList();
+                if (decompositionGroups.Count > i + 1)
+                    decompositionGroups.RemoveAt(i + 1);
+                i--;
+            }
+
+            decompositionGroups[0].ForEach(i => decomposition.Add(i));
+            decomposition.Add(1);
+            decomposition.Add(number);
+            return decomposition.OrderBy(i => i).ToList();
+        }
+
+
+        private static List<int> ErasthetonovoSito(int number)
+        {
+            var list = new List<bool>();
+            var primes = new List<int>();
+            for (int i = 0; i <= number + 1; i++)
+            {
+                if (i == 0 || i == 1)
+                {
+                    list.Add(false);
+                    continue;
+                }
+
+                list.Add(true);
+            }
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i])
+                    for (int j = 2 * i; j < list.Count; j += i)
+                    {
+                        list[j] = false;
+                    }
+            }
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i])
+                    primes.Add(i);
+            }
+
+            return primes;
+        }
+
+        #endregion
 
         #region Day19
 
