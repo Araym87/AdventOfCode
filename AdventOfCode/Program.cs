@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using AdventOfCode.Day21;
 using AdventOfCode.FifteenthDay;
 using AdventOfCode.FourteenthDay;
 using AdventOfCode.NinthDay;
@@ -61,8 +62,118 @@ namespace AdventOfCode
             //Day19PartTwo();
             //Day20PartOne();
             //Day20PartTwo();
+            //Day21();
             Console.ReadLine();
         }
+
+        #region Day21
+
+        private static void Day21()
+        {
+            var player = new Hero(0, 0, 100)
+            {
+                Name = "Araym",
+            };
+            var boss = new Hero(2, 8, 100)
+            {
+                Name = "Boss",
+            };
+            var rings = new List<Ring>
+            {
+                new Ring {Armor = 0, Damage = 1, Cost = 25},
+                new Ring {Armor = 0, Damage = 2, Cost = 50},
+                new Ring {Armor = 0, Damage = 3, Cost = 100},
+                new Ring {Armor = 1, Damage = 0, Cost = 20},
+                new Ring {Armor = 2, Damage = 0, Cost = 40},
+                new Ring {Armor = 3, Damage = 0, Cost = 80},
+            };
+            var armors = new List<Armor>
+            {
+                new Armor {Armor = 1, Cost = 13},
+                new Armor {Armor = 2, Cost = 31},
+                new Armor {Armor = 3, Cost = 53},
+                new Armor {Armor = 4, Cost = 75},
+                new Armor {Armor = 5, Cost = 102},
+            };
+            var weapons = new List<Weapon>
+            {
+                new Weapon {Damage = 4, Cost = 8},
+                new Weapon {Damage = 5, Cost = 10},
+                new Weapon {Damage = 6, Cost = 25},
+                new Weapon {Damage = 7, Cost = 40},
+                new Weapon {Damage = 8, Cost = 74},
+            };
+
+            // Create combinations of equipment
+            var minCostOfWinningEquipment = int.MaxValue;
+            var maxCostOfLoosingEquipment = int.MinValue;
+            foreach (var weapon in weapons)
+            {
+                var equip = new List<Item>();
+                player.Equip = equip;
+                equip.Add(weapon);
+                // Armor
+                for (var i = -1; i < armors.Count; i++)
+                {
+                    if(i != -1)
+                        equip.Add(armors[i]);
+
+                    for (var j = -1; j < rings.Count; j++)
+                    {
+                        if (j != -1)
+                            equip.Add(rings[j]);
+
+                        for (var k = j; k < rings.Count; k++)
+                        {
+                            if(j != k)
+                                equip.Add(rings[k]);
+
+                            
+                            if (Duel(player, boss))
+                            {
+                                if (minCostOfWinningEquipment > player.TotalCost)
+                                    minCostOfWinningEquipment = player.TotalCost;
+                            }
+                            else
+                            {
+                                if (maxCostOfLoosingEquipment < player.TotalCost)
+                                    maxCostOfLoosingEquipment = player.TotalCost;
+                            }
+
+                            if (j != k)
+                                equip.Remove(rings[k]);
+                        }
+
+                        if (j != -1)
+                            equip.Remove(rings[j]);
+                    }
+                    if (i != -1)
+                        equip.Remove(armors[i]);
+                }
+            }
+
+            Console.WriteLine($"Minimum Cost for winning is {minCostOfWinningEquipment}");
+            Console.WriteLine($"Maximum Cost for loosing is {maxCostOfLoosingEquipment}");
+        }
+
+        private static bool Duel(Hero player, Hero boss)
+        {
+            player.ResteHitPoints();
+            boss.ResteHitPoints();
+            while (!player.IsDead && !boss.IsDead)
+            {
+                // Player Attacks
+                boss.Defense(player.Damage);
+                if (boss.IsDead)
+                    return true;
+
+                player.Defense(boss.Damage);
+            }
+
+            return false;
+        }
+
+        #endregion
 
         #region Day20
 

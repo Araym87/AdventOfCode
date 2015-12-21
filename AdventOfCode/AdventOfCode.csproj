@@ -46,6 +46,11 @@
   <ItemGroup>
     <Compile Include="Day15\Ingredient.cs" />
     <Compile Include="Day14\Reindeer.cs" />
+    <Compile Include="Day21\Armor.cs" />
+    <Compile Include="Day21\Hero.cs" />
+    <Compile Include="Day21\Item.cs" />
+    <Compile Include="Day21\Ring.cs" />
+    <Compile Include="Day21\Weapon.cs" />
     <Compile Include="Day9\City.cs" />
     <Compile Include="Day9\Route.cs" />
     <Compile Include="Program.cs" />
