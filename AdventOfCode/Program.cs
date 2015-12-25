@@ -1,21 +1,16 @@
 ﻿using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using AdventOfCode.Day21;
 using AdventOfCode.Day22;
-using AdventOfCode.Day23;
 using AdventOfCode.FifteenthDay;
 using AdventOfCode.FourteenthDay;
 using AdventOfCode.NinthDay;
@@ -75,15 +70,34 @@ namespace AdventOfCode
             //Day23(1);
             //Day24(3);
             //Day24(4);
-
+            //Day25();
             Console.ReadLine();
         }
 
         #region Day25
 
-        private static void Day25PartOne()
+        private static void Day25()
         {
-            
+            var column = 3019;
+            var row = 3010;
+            var value = 0;
+            for (var i = 1; i <= column; i++)
+            {
+                value += i;
+            }
+            for (var i = 0; i < row - 1; i++)
+            {
+                value += column + i;
+            }
+
+            long startValue = 20151125;
+            for (var i = 1; i < value; i++)
+            {
+                startValue = (startValue*252533)%33554393;
+            }
+
+
+            Console.WriteLine($"{startValue}");
         }
 
         #endregion
