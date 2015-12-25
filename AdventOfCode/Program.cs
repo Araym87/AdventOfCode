@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -9,7 +10,12 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 using AdventOfCode.Day21;
+using AdventOfCode.Day22;
+using AdventOfCode.Day23;
 using AdventOfCode.FifteenthDay;
 using AdventOfCode.FourteenthDay;
 using AdventOfCode.NinthDay;
@@ -63,8 +69,366 @@ namespace AdventOfCode
             //Day20PartOne();
             //Day20PartTwo();
             //Day21();
+            //Day22();
+            //Day22(true);
+            //Day23();
+            //Day23(1);
+            //Day24(3);
+            //Day24(4);
+
             Console.ReadLine();
         }
+
+        #region Day25
+
+        private static void Day25PartOne()
+        {
+            
+        }
+
+        #endregion
+
+        #region Day24
+
+        private static void Day24(int parts)
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDay24.txt");
+            var gifts = new List<int>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                gifts.Add(Convert.ToInt32(line.Trim()));
+            }
+
+            var allCombinations = new List<List<int>>();
+            gifts = gifts.OrderBy(i => i).ToList();
+            Day24Recursion(gifts.Sum(i => i) / parts, gifts, new List<int>(), 0, allCombinations);
+            allCombinations = allCombinations.OrderBy(i => i.Count).ToList();
+
+            var index = 0;
+            var min = allCombinations[index].Count;   
+            var minProduct = long.MaxValue;
+            while (allCombinations[index].Count == min)
+            {
+                long p = 1;
+                allCombinations[index].ForEach(item => p *= item);
+                if (p < minProduct)
+                    minProduct = p;
+                index++;
+            }
+
+            file.Close();
+            Console.WriteLine($"Minimum Quantum Entaglement is {minProduct}");
+        }
+
+        private static void Day24Recursion(int equalityNumber, List<int> restOfContainers, List<int> usedNumbers, int sum, List<List<int>> combinations)
+        {
+            if (sum > equalityNumber)
+                return;
+
+            if (sum == equalityNumber)
+            {
+                combinations.Add(usedNumbers);
+                return;
+            }
+
+            for (var i = 0; i < restOfContainers.Count; i++)
+            {
+                var items = usedNumbers.ToList();
+                items.Add(restOfContainers[i]);
+                var partSum = sum + restOfContainers[i];
+                var containersInNextStep = new List<int>();
+                for (var j = i + 1; j < restOfContainers.Count; j++)
+                {
+                    containersInNextStep.Add(restOfContainers[j]);
+                }
+                Day24Recursion(equalityNumber, containersInNextStep, items, partSum, combinations);
+            }
+
+        }
+
+        #endregion
+
+        #region Day23
+
+        private static void Day23(int startValue = 0)
+        {
+            string line;
+            var file = new StreamReader("Inputs\\inputDay23.txt");
+            // Initialize instructions
+            var instructions = new List<string>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                instructions.Add(line.Trim());
+            }
+            var index = 0;
+            var a = startValue;
+            var b = 0;
+            while (true)
+            {
+                if (!(index >= 0 && index < instructions.Count))
+                    break;
+
+                ProcessInstruction(ref a, ref b, ref index, instructions[index]);
+            }
+
+            file.Close();
+            Console.WriteLine($"Value of register b is {b}");
+        }
+
+        private static void ProcessInstruction(ref int a, ref int b, ref int index, string instruction)
+        {
+            var parts = instruction.Split(new[] {' ', ','}, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length == 3)
+            {
+                var value = parts[1].Equals("a") ? a : b;
+                parts[2] = parts[2].Trim();
+                var jump = Convert.ToInt32(parts[2].Substring(1));
+                var plusMinus = parts[2].Substring(0, 1).Equals("-") ? -1 : 1;
+
+                if (parts[0].Trim().Equals("jio"))
+                {
+                    if (value == 1)
+                    {
+                        index += (jump*plusMinus);
+                        return;
+                    }
+
+                }
+                if (parts[0].Trim().Equals("jie"))
+                {
+                    if (value%2 == 0)
+                    {
+                        index += (jump*plusMinus);
+                        return;
+                    }
+                }
+                index += 1;
+                return;
+            }
+            if (parts.Length == 2)
+            {
+                if (parts[0].Trim().Equals("jmp"))
+                {
+                    parts[1] = parts[1].Trim();
+                    var jump = Convert.ToInt32(parts[1].Substring(1));
+                    var plusMinus = parts[1].Substring(0, 1).Equals("-") ? -1 : 1;
+
+                    index += (jump * plusMinus);
+
+                    return;
+                }
+                index += 1;
+                if (parts[0].Trim().Equals("inc"))
+                {
+                    if (parts[1].Trim().Equals("a"))
+                        a += 1;
+                    else
+                        b += 1;
+
+                    return;
+                }
+                if (parts[0].Trim().Equals("hlf"))
+                {
+                    if (parts[1].Trim().Equals("a"))
+                        a /= 2;
+                    else
+                        b /= 2;
+
+                    return;
+                }
+                if (parts[0].Trim().Equals("tpl"))
+                {
+                    if (parts[1].Trim().Equals("a"))
+                        a *= 3;
+                    else
+                        b *= 3;
+
+                    return;
+                }
+            }
+        }
+
+
+        #endregion
+
+        #region Day22
+
+        private static void Day22(bool removeHitPoint = false)
+        {
+            #region SpellInitialize
+            var spells = new List<Spell>
+            {
+                new Spell
+                {
+                    Name = "MagicMissile",
+                    ArmorIncrease = 0,
+                    Lasts = 0,
+                    Damage = 4,
+                    ManaCost = 53,
+                    HitPointsRestore = 0,
+                    ManaRestore = 0
+                },
+                new Spell
+                {
+                    Name = "Drain",
+                    ArmorIncrease = 0,
+                    Lasts = 0,
+                    Damage = 2,
+                    ManaCost = 73,
+                    HitPointsRestore = 2,
+                    ManaRestore = 0
+                },
+                new Spell
+                {
+                    Name = "Shield",
+                    ArmorIncrease = 7,
+                    Lasts = 6,
+                    Damage = 0,
+                    ManaCost = 113,
+                    HitPointsRestore = 0,
+                    ManaRestore = 0
+                },
+                new Spell
+                {
+                    Name = "Poison",
+                    ArmorIncrease = 0,
+                    Lasts = 6,
+                    Damage = 3,
+                    ManaCost = 173,
+                    HitPointsRestore = 0,
+                    ManaRestore = 0
+                },
+                new Spell
+                {
+                    Name = "Recharge",
+                    ArmorIncrease = 0,
+                    Lasts = 5,
+                    Damage = 0,
+                    ManaCost = 229,
+                    HitPointsRestore = 0,
+                    ManaRestore = 101
+                }
+            };
+            #endregion
+            // Brutal BruteForce
+            minimumMana = new List<Spell>();
+            minimumMana.Add(new Spell {ManaCost = int.MaxValue});
+            for (var i = 0; i < 8; i++)
+            {
+                Task.Factory.StartNew(() => Duels(10000000, spells, removeHitPoint));
+            }
+
+            Duels(10000000, spells, removeHitPoint);
+
+            Console.WriteLine($"The lowest mana spent is {minimumMana.Sum(i => i.ManaCost)}");
+        }
+
+        private static object minimumLock = new object();
+            
+        private static List<Spell> minimumMana; 
+
+        private static void Duels(int count, List<Spell> spells, bool removeHitPoint) 
+        {
+            var player = new HeroMagic(0, 50, 500)
+            {
+                Name = "Araym"
+
+            };
+            var boss = new HeroMagic(10, 71, 0)
+            {
+                Name = "Boss",
+            };
+
+            var numberOfFights = 0;
+            while (numberOfFights < count)
+            {
+                player.ResetBaseStats();
+                boss.ResetBaseStats();
+                var spellOrder = new List<Spell>();
+                if (MagicDuel(spells, player, boss, spellOrder, removeHitPoint))
+                {
+                    IsMinimum(spellOrder);
+                }
+                numberOfFights++;
+            }
+        }
+
+        private static void IsMinimum(List<Spell> spellOrder)
+        {
+            lock (minimumLock)
+            {
+                if (minimumMana.Sum(i => i.ManaCost) > spellOrder.Sum(i => i.ManaCost))
+                    minimumMana = spellOrder;
+            }
+        }
+
+        private static bool MagicDuel(List<Spell> spells, HeroMagic player, HeroMagic boss, List<Spell> manaSpent, bool removeHitPoint)
+        {
+            var r = new Random();
+            while (!player.IsDead && !boss.IsDead)
+            {
+                if (removeHitPoint)
+                {
+                    player.HitPoints--;
+                    if (player.IsDead)
+                        return false;
+                }
+                player.ProcessSpells();
+                boss.ProcessSpells();
+
+                var spellToCasts = spells.Where(i => i.ManaCost <= player.ManaPoints).ToList();
+                foreach (var activeSpell in player.ActiveSpells)
+                {
+                    spellToCasts.Remove(spells.First(i => i.Name.Equals(activeSpell.Spell.Name)));
+                }
+                foreach (var activeSpell in boss.ActiveSpells)
+                {
+                    spellToCasts.Remove(spells.First(i => i.Name.Equals(activeSpell.Spell.Name)));
+                }
+                if (spellToCasts.Count == 0)
+                    break;
+
+                var spellIndex = r.Next(0, spellToCasts.Count);
+                var spellToCast = spellToCasts[spellIndex];
+                switch (spellToCast.Name)
+                {
+                    case "MagicMissile":
+                        boss.HitPoints -= spellToCast.Damage;
+                        break;
+                    case "Recharge":
+                        player.SpellCasted(spellToCast);
+                        break;
+                    case "Poison":
+                        boss.SpellCasted(spellToCast);
+                        break;
+                    case "Shield":
+                        player.SpellCasted(spellToCast);
+                        break;
+                    case "Drain":
+                        boss.HitPoints -= spellToCast.Damage;
+                        player.HitPoints += spellToCast.HitPointsRestore;
+                        break;
+                }
+                player.ManaPoints -= spellToCast.ManaCost;
+                manaSpent.Add(spellToCast);
+
+                if (boss.IsDead)
+                    return true;
+
+                player.ProcessSpells();
+                boss.ProcessSpells();
+
+                var attack = boss.Damage - player.Armor;
+                player.HitPoints -= attack > 1 ? attack : 1;
+            }
+
+            return boss.IsDead;
+        }
+
+        #endregion
 
         #region Day21
 
