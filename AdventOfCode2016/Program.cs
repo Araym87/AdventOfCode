@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using AdventOfCode2016.Day1;
+using AdventOfCode2016.Day10;
+using AdventOfCode2016.Day11;
 using AdventOfCode2016.Day2;
 using AdventOfCode2016.Day3;
 using AdventOfCode2016.Day4;
+using AdventOfCode2016.Day5;
+using AdventOfCode2016.Day6;
+using AdventOfCode2016.Day7;
+using AdventOfCode2016.Day8;
+using AdventOfCode2016.Day9;
 using AdventOfCode2016.General;
 
 namespace AdventOfCode2016
@@ -19,30 +25,34 @@ namespace AdventOfCode2016
 
         static void Main(string[] args)
         {
-            var result = new StringBuilder();
-            //InitializeCurrentDay();
-            InitializeDays();
+            InitializeCurrentDay();
+            //InitializeDays();
             foreach (var dayResult in dayResults)
             {
-                dayResult.ProvideMeSolution(result);
-            }
-            Console.WriteLine(result.ToString());
-            Console.ReadLine();
+                dayResult.ProvideMeSolution();
+                Console.ReadLine();
+            }         
         }
 
         #region InitializeMethods
 
         private static void InitializeCurrentDay()
         {
-            dayResults.Add(new DayFour());
+            dayResults.Add(new DayEleven());
         }
 
         private static void InitializeDays()
         {
-           dayResults.Add(new DayOne());
-           dayResults.Add(new DayTwo());
-           dayResults.Add(new DayThree());
-           dayResults.Add(new DayFour());
+            dayResults.Add(new DayOne());
+            dayResults.Add(new DayTwo());
+            dayResults.Add(new DayThree());
+            dayResults.Add(new DayFour());
+            dayResults.Add(new DayFive());
+            dayResults.Add(new DaySix());
+            dayResults.Add(new DaySeven());
+            dayResults.Add(new DayEight());
+            dayResults.Add(new DayNine());
+            dayResults.Add(new DayTen());
         }
 
         #endregion

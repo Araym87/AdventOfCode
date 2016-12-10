@@ -11,7 +11,7 @@ namespace AdventOfCode2016.Day4
     {
         #region Protected Methods
 
-        protected override void FirstPart(StringBuilder results)
+        protected override void FirstPart()
         {
             var sumOfSectorIds = 0;
             foreach (var line in AdventOfCodeReader.ReadReaderLineByLine(new StreamReader("Inputs\\input4.txt")))
@@ -22,10 +22,10 @@ namespace AdventOfCode2016.Day4
                     sumOfSectorIds += room.SectorId;
             }
 
-            results.AppendLine($"Sum of all real room is {sumOfSectorIds}");
+            Console.WriteLine($"Sum of all real room is {sumOfSectorIds}");
         }
 
-        protected override void SecondPart(StringBuilder results)
+        protected override void SecondPart()
         {
             var realRooms = new List<Room>();
             foreach (var line in AdventOfCodeReader.ReadReaderLineByLine(new StreamReader("Inputs\\input4.txt")))
@@ -40,7 +40,7 @@ namespace AdventOfCode2016.Day4
 
             }
 
-            results.AppendLine($"SectorID of room, where North Pole objects are stored is {realRooms.First(i => i.DecryptedName.Contains("northpole")).SectorId}");
+            Console.WriteLine($"SectorID of room, where North Pole objects are stored is {realRooms.First(i => i.DecryptedName.Contains("northpole")).SectorId}");
         }
 
         #endregion

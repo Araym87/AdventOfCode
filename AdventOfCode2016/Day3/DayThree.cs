@@ -12,7 +12,7 @@ namespace AdventOfCode2016.Day3
     {
         #region Protected Methods
 
-        protected override void FirstPart(StringBuilder results)
+        protected override void FirstPart()
         {
             var validTriangles = 0;
 
@@ -24,10 +24,10 @@ namespace AdventOfCode2016.Day3
                     validTriangles++;
             }
 
-            results.AppendLine($"Number of valid triangles: {validTriangles}");
+            Console.WriteLine($"Number of valid triangles: {validTriangles}");
         }
 
-        protected override void SecondPart(StringBuilder results)
+        protected override void SecondPart()
         {
             var validTriangles = 0;
             var cachedSides = new List<List<int>>();
@@ -56,7 +56,7 @@ namespace AdventOfCode2016.Day3
                 }
             }
 
-            results.AppendLine($"Number of valid triangles: {validTriangles}");
+            Console.WriteLine($"Number of valid triangles: {validTriangles}");
         }
 
         #endregion

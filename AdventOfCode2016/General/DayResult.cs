@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 
 namespace AdventOfCode2016.General
 {
@@ -7,29 +6,30 @@ namespace AdventOfCode2016.General
     {
         #region Public Methods
 
-        public void ProvideMeSolution(StringBuilder results)
+        public void ProvideMeSolution()
         {
+            
             var firstRow = $"#########  Results for Day {GetStringDay()}  #########";
-            results.AppendLine(firstRow);
-            results.AppendLine("FirstPart:");
-            FirstPart(results);
-            results.AppendLine("SecondPart:");
-            SecondPart(results);
-            results.AppendLine(new string('-', firstRow.Length));
+            Console.WriteLine(firstRow);
+            Console.WriteLine("FirstPart:");
+            FirstPart();
+            Console.WriteLine("SecondPart:");
+            SecondPart();
+            Console.WriteLine(new string('-', firstRow.Length));
         }
 
         #endregion
 
         #region Protected Methods
 
-        protected virtual void FirstPart(StringBuilder results)
+        protected virtual void FirstPart()
         {
-            results.AppendLine("Not Implemented Yet.");
+            Console.WriteLine("Not Implemented Yet.");
         }
 
-        protected virtual void SecondPart(StringBuilder results)
+        protected virtual void SecondPart()
         {
-            results.AppendLine("Not Implemented Yet.");
+            Console.WriteLine("Not Implemented Yet.");
         }
 
         #endregion

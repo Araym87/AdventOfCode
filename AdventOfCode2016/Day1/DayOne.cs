@@ -10,7 +10,7 @@ namespace AdventOfCode2016.Day1
     {
         #region Protected Methods
 
-        protected override void FirstPart(StringBuilder stringBuilder)
+        protected override void FirstPart()
         {
             var headingDirection = EHeadingDirection.North;
             var position = new Position(0, 0);
@@ -34,10 +34,10 @@ namespace AdventOfCode2016.Day1
                 }
             }
 
-            stringBuilder.AppendLine($"Distance is {position.GetDistanceFromStartPoint()} blocks.");            
+            Console.WriteLine($"Distance is {position.GetDistanceFromStartPoint()} blocks.");            
         }
 
-        protected override void SecondPart(StringBuilder stringBuilder)
+        protected override void SecondPart()
         {
             var headingDirection = EHeadingDirection.North;
             var arraySize = 400;
@@ -91,7 +91,7 @@ namespace AdventOfCode2016.Day1
                 }
             }
 
-            stringBuilder.AppendLine($"Distance is {position.GetDistanceFromStartPoint()} blocks.");
+            Console.WriteLine($"Distance is {position.GetDistanceFromStartPoint()} blocks.");
         }
 
         #endregion

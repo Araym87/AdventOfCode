@@ -45,6 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdventOfCodeReader.cs" />
+    <Compile Include="Day10\Bot.cs" />
+    <Compile Include="Day10\DayTen.cs" />
+    <Compile Include="Day11\DayEleven.cs" />
     <Compile Include="Day1\DayOne.cs" />
     <Compile Include="Day1\EHeadingDirection.cs" />
     <Compile Include="Day1\Position.cs" />
@@ -56,6 +59,19 @@
     <Compile Include="Day3\Triangle.cs" />
     <Compile Include="Day4\DayFour.cs" />
     <Compile Include="Day4\Room.cs" />
+    <Compile Include="Day5\DayFive.cs" />
+    <Compile Include="Day5\HashThread.cs" />
+    <Compile Include="Day5\HashThreadFirst.cs" />
+    <Compile Include="Day5\HashThreadSecond.cs" />
+    <Compile Include="Day5\ThreadManager.cs" />
+    <Compile Include="Day5\ThreadManagerFirst.cs" />
+    <Compile Include="Day5\ThreadManagerSecond.cs" />
+    <Compile Include="Day6\DaySix.cs" />
+    <Compile Include="Day7\DaySeven.cs" />
+    <Compile Include="Day8\DayEight.cs" />
+    <Compile Include="Day8\DoorPanel.cs" />
+    <Compile Include="Day8\EInstruction.cs" />
+    <Compile Include="Day9\DayNine.cs" />
     <Compile Include="General\DayResult.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,6 +80,27 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Inputs\input11.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input10.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input9.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input8.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input7.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input6.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input5.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Inputs\input4.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -9,7 +9,7 @@ namespace AdventOfCode2016.Day2
     {
         #region Protected Methods
 
-        protected override void FirstPart(StringBuilder results)
+        protected override void FirstPart()
         {
             var panel = new Panel();
             var pass = new StringBuilder();
@@ -21,10 +21,10 @@ namespace AdventOfCode2016.Day2
                 }
                 pass.Append(panel.GetValue());
             }
-            results.AppendLine($"Password is {pass}");
+            Console.WriteLine($"Password is {pass}");
         }
 
-        protected override void SecondPart(StringBuilder results)
+        protected override void SecondPart()
         {
             var panel = new SpecialPanel();
             var pass = new StringBuilder();
@@ -36,7 +36,7 @@ namespace AdventOfCode2016.Day2
                 }
                 pass.Append(panel.GetValue());
             }
-            results.AppendLine($"Password is {pass}");
+            Console.WriteLine($"Password is {pass}");
         }
 
         #endregion
