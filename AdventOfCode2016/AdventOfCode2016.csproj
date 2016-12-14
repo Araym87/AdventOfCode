@@ -47,7 +47,22 @@
     <Compile Include="AdventOfCodeReader.cs" />
     <Compile Include="Day10\Bot.cs" />
     <Compile Include="Day10\DayTen.cs" />
+    <Compile Include="Day11\Class1.cs" />
     <Compile Include="Day11\DayEleven.cs" />
+    <Compile Include="Day11\State.cs" />
+    <Compile Include="Day11\StateTransformations.cs" />
+    <Compile Include="Day12\Copy.cs" />
+    <Compile Include="Day12\DayTwelve.cs" />
+    <Compile Include="Day12\Decrement.cs" />
+    <Compile Include="Day12\EInstructionType.cs" />
+    <Compile Include="Day12\Increment.cs" />
+    <Compile Include="Day12\Instruction.cs" />
+    <Compile Include="Day12\Jump.cs" />
+    <Compile Include="Day12\Variables.cs" />
+    <Compile Include="Day13\DayThirteen.cs" />
+    <Compile Include="Day13\Position.cs" />
+    <Compile Include="Day13\PositionExtensions.cs" />
+    <Compile Include="Day14\DayFourteen.cs" />
     <Compile Include="Day1\DayOne.cs" />
     <Compile Include="Day1\EHeadingDirection.cs" />
     <Compile Include="Day1\Position.cs" />
@@ -80,6 +95,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Inputs\input11a.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input12.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Inputs\input11.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

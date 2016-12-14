@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace AdventOfCode2016.Day10
 {
     public class Bot
     {
+        #region Properties
+
         public int ID { get; set; }
 
         public List<int> Chips { get; set; } = new List<int>();
@@ -19,5 +17,7 @@ namespace AdventOfCode2016.Day10
         public bool LowOutput { get; set; }
 
         public bool HighOutput { get; set; }
+
+        #endregion
     }
 }

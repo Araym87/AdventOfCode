@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using AdventOfCode2016.Day1;
 using AdventOfCode2016.Day10;
 using AdventOfCode2016.Day11;
+using AdventOfCode2016.Day12;
+using AdventOfCode2016.Day13;
+using AdventOfCode2016.Day14;
 using AdventOfCode2016.Day2;
 using AdventOfCode2016.Day3;
 using AdventOfCode2016.Day4;
@@ -53,6 +56,11 @@ namespace AdventOfCode2016
             dayResults.Add(new DayEight());
             dayResults.Add(new DayNine());
             dayResults.Add(new DayTen());
+            dayResults.Add(new DayEleven());
+            dayResults.Add(new DayTwelve());
+            dayResults.Add(new DayThirteen());
+            dayResults.Add(new DayFourteen());
+
         }
 
         #endregion
