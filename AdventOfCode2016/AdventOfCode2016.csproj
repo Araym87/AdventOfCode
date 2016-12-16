@@ -63,6 +63,8 @@
     <Compile Include="Day13\Position.cs" />
     <Compile Include="Day13\PositionExtensions.cs" />
     <Compile Include="Day14\DayFourteen.cs" />
+    <Compile Include="Day15\DayFifteen.cs" />
+    <Compile Include="Day16\DaySixteen.cs" />
     <Compile Include="Day1\DayOne.cs" />
     <Compile Include="Day1\EHeadingDirection.cs" />
     <Compile Include="Day1\Position.cs" />
@@ -96,6 +98,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Inputs\input11a.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input15.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Inputs\input12.txt">
