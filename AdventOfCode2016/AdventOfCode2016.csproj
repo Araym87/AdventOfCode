@@ -65,9 +65,22 @@
     <Compile Include="Day14\DayFourteen.cs" />
     <Compile Include="Day15\DayFifteen.cs" />
     <Compile Include="Day16\DaySixteen.cs" />
+    <Compile Include="Day17\DaySeventeen.cs" />
+    <Compile Include="Day17\Step.cs" />
+    <Compile Include="Day18\DayEighteen.cs" />
+    <Compile Include="Day19\DayNineteen.cs" />
     <Compile Include="Day1\DayOne.cs" />
     <Compile Include="Day1\EHeadingDirection.cs" />
     <Compile Include="Day1\Position.cs" />
+    <Compile Include="Day20\BlackList.cs" />
+    <Compile Include="Day20\DayTwenty.cs" />
+    <Compile Include="Day21\DayTwentyOne.cs" />
+    <Compile Include="Day22\DayTwentyTwo.cs" />
+    <Compile Include="Day22\Node.cs" />
+    <Compile Include="Day23\DayTwentyThree.cs" />
+    <Compile Include="Day23\Toggle.cs" />
+    <Compile Include="Day25\DayTwentyFive.cs" />
+    <Compile Include="Day25\Output.cs" />
     <Compile Include="Day2\DayTwo.cs" />
     <Compile Include="Day2\EDirection.cs" />
     <Compile Include="Day2\Panel.cs" />
@@ -98,6 +111,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Inputs\input11a.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input25.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input22.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input21.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input20.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Inputs\input15.txt">

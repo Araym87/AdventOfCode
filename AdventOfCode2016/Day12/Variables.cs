@@ -9,6 +9,10 @@ namespace AdventOfCode2016.Day12
 
         public Dictionary<char, int> Variable = new Dictionary<char, int>();
 
+        public List<Instruction> Instructions;
+
+        public StringBuilder Output = new StringBuilder();
+
         #endregion
 
         #region Public Methods
@@ -34,5 +38,19 @@ namespace AdventOfCode2016.Day12
         }
 
         #endregion
+
+        public Variables EmptyClone()
+        {
+            var x = new Variables();
+            x.Variable = new Dictionary<char, int>();
+            foreach (var i in Variable)
+            {
+                x.Variable.Add(i.Key, i.Value);
+            }
+            x.Instructions = Instructions;
+            Output = new StringBuilder();
+
+            return x;
+        }
     }
 }
