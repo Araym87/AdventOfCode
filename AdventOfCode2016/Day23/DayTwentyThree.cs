@@ -13,99 +13,63 @@ namespace AdventOfCode2016.Day23
     {
         protected override void FirstPart()
         {
-            var variables = new Variables();
-            var instructions = new List<Instruction>();
-
+            var computer = new Computer();
+            computer.Register.Add('a', 7);
             foreach (var line in AdventOfCodeReader.ReadReaderLineByLine(new StreamReader("Inputs\\input23.txt")))
             {
-                var instruction = ReadInputLine(line, variables);
-                instruction.Variables = variables;
-                instructions.Add(instruction);
+                var instruction = ReadInputLine(line);
+                computer.AddInstruction(instruction);
             }
-            var index = 0;
-            while (index >= 0 && index < instructions.Count)
-            {
-                index += instructions[index].Perform();
-            }
-
-            Console.WriteLine($"Result on register 'a' is {variables.Variable['a']}");
+            computer.Run();
+            Console.WriteLine($"Result on register 'a' is {computer.Register['a']}");
         }
 
-        private Instruction ReadInputLine(string line, Variables variables)
+        protected override void SecondPart()
         {
-            return null;
-            var words = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var computer = new Computer();
+            computer.Register.Add('a', 12);
+            foreach (var line in AdventOfCodeReader.ReadReaderLineByLine(new StreamReader("Inputs\\input23.txt")))
+            {
+                var instruction = ReadInputLine(line);
+                computer.AddInstruction(instruction);
+            }
+            computer.Run();
+            Console.WriteLine($"Result on register 'a' is {computer.Register['a']}");
+        }
+
+        private Instruction ReadInputLine(string line)
+        {
+            var words = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim()).ToList();
 
             if (words[0] == "cpy")
             {
-                int intFrom;
-                var copyTo = words[2][0];
-                variables.Add(copyTo);
-                if (int.TryParse(words[1], out intFrom))
-                {
-                    return new Copy(intFrom, copyTo);
-                }
-
-                var charFrom = words[1][0];
-                variables.Add(charFrom);
-                return new Copy(charFrom, copyTo);
+                return new Copy(words[1], words[2]);
             }
 
             if (words[0] == "inc")
             {
-                int intFrom;
-                if (int.TryParse(words[1], out intFrom))
-                {
-                    return new Increment(intFrom);
-                }
-
-                var charFrom = words[1][0];
-                variables.Add(charFrom);
-                return new Increment(charFrom);
+                return new Increase(words[1]);
 
             }
 
             if (words[0] == "dec")
             {
-                int intFrom;
-                if (int.TryParse(words[1], out intFrom))
-                {
-                    return new Decrement(intFrom);
-                }
-
-                var charFrom = words[1][0];
-                variables.Add(charFrom);
-                return new Decrement(charFrom);
+                return new Decrease(words[1]);
             }
-
-            if (words[0] == "jnz")
+            
+            if(words[0] == "jnz")
             {
-                int intFrom;
-                var step = Convert.ToInt32(words[2]);
-                if (int.TryParse(words[1], out intFrom))
-                {
-                    return new Jump(intFrom, step);
-                }
-
-                var charFrom = words[1][0];
-                variables.Add(charFrom);
-                return new Jump(charFrom, step);
+                return new Jump(words[1], words[2]);
             }
 
             if (words[0] == "tgl")
             {
-                int intFrom;
-                var step = Convert.ToInt32(words[2]);
-                if (int.TryParse(words[1], out intFrom))
-                {
-                    return new Jump(intFrom, step);
-                }
-
-                var charFrom = words[1][0];
-                variables.Add(charFrom);
-                return new Jump(charFrom, step);
+                return new Toggle(words[1]);
             }
+
+            throw new Exception($"Unknown instructions {words[0]}");
         }
+
 
         protected override string GetStringDay()
         {

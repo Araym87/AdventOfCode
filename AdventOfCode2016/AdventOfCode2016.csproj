@@ -77,7 +77,14 @@
     <Compile Include="Day21\DayTwentyOne.cs" />
     <Compile Include="Day22\DayTwentyTwo.cs" />
     <Compile Include="Day22\Node.cs" />
+    <Compile Include="Day23\Computer.cs" />
+    <Compile Include="Day23\Copy.cs" />
     <Compile Include="Day23\DayTwentyThree.cs" />
+    <Compile Include="Day23\Decrease.cs" />
+    <Compile Include="Day23\Increase.cs" />
+    <Compile Include="Day23\Instruction.cs" />
+    <Compile Include="Day23\ISupportToggle.cs" />
+    <Compile Include="Day23\Jump.cs" />
     <Compile Include="Day23\Toggle.cs" />
     <Compile Include="Day25\DayTwentyFive.cs" />
     <Compile Include="Day25\Output.cs" />
@@ -111,6 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Inputs\input11a.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input23.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Inputs\input25.txt">

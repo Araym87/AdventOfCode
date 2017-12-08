@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2016.Day23
 {
-    public class Toggle : Instruction
+    public class Decrease : Instruction
     {
         private char? registerName;
-        private int? directApproach;
+        private int? number;
 
-        public Toggle(string register)
+        public Decrease(string register)
         {
             TwoInstructions = false;
             if (int.TryParse(register, out var x))
-                directApproach = x;
+                number = x;
             else
                 registerName = register[0];
         }
@@ -27,12 +27,14 @@ namespace AdventOfCode2016.Day23
 
         public override int Process(Dictionary<char, int> register)
         {
-            return directApproach ?? register[registerName.Value];
+            if (registerName.HasValue)
+                register[registerName.Value]--;
+            return 1;
         }
 
         public override Instruction ToggleInstruction()
         {
-            return new Increase(registerName?.ToString() ?? directApproach.Value.ToString()); ;
+            return new Increase(registerName?.ToString() ?? number.Value.ToString());
         }
     }
 }
