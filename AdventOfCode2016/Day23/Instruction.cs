@@ -12,7 +12,7 @@ namespace AdventOfCode2016.Day23
 
         public abstract List<char> Register();
 
-        public abstract int Process(Dictionary<char, int> register);
+        public abstract int Process(Dictionary<char, int> register, List<int> clockSignal);
 
         public abstract Instruction ToggleInstruction();
     }

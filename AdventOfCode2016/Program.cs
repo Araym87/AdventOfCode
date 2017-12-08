@@ -52,7 +52,7 @@ namespace AdventOfCode2016
 
         private static void InitializeCurrentDay()
         {
-            dayResults.Add(new DayTwentyFour());
+            dayResults.Add(new DayTwentyFive());
         }
 
         private static void InitializeDays()
@@ -80,8 +80,8 @@ namespace AdventOfCode2016
             dayResults.Add(new DayTwentyOne());
             dayResults.Add(new DayTwentyTwo());
             dayResults.Add(new DayTwentyThree());
+            dayResults.Add(new DayTwentyFour());
             dayResults.Add(new DayTwentyFive());
-
         }
 
         #endregion

@@ -25,7 +25,7 @@ namespace AdventOfCode2016.Day23
             return registerName.HasValue ? new List<char> { registerName.Value } : new List<char>();
         }
 
-        public override int Process(Dictionary<char, int> register)
+        public override int Process(Dictionary<char, int> register, List<int> clockSignal)
         {
             if (registerName.HasValue)
                 register[registerName.Value]--;

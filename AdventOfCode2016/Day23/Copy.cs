@@ -39,7 +39,7 @@ namespace AdventOfCode2016.Day23
             return result;
         }
 
-        public override int Process(Dictionary<char, int> register)
+        public override int Process(Dictionary<char, int> register, List<int> clockSignal)
         {
             if (!toChar.HasValue)
                 return 1;

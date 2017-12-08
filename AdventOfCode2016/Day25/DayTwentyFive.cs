@@ -5,7 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AdventOfCode2016.Day12;
+using AdventOfCode2016.Day23;
 using AdventOfCode2016.General;
+using Copy = AdventOfCode2016.Day23.Copy;
+using Instruction = AdventOfCode2016.Day12.Instruction;
+using Jump = AdventOfCode2016.Day12.Jump;
 
 namespace AdventOfCode2016.Day25
 {
@@ -13,126 +17,72 @@ namespace AdventOfCode2016.Day25
     {
         protected override void FirstPart()
         {
-            var variables = new Variables();
-            var instructions = new List<Instruction>();
-
+            var computer = new Computer();
+            
             foreach (var line in AdventOfCodeReader.ReadReaderLineByLine(new StreamReader("Inputs\\input25.txt")))
             {
-                var instruction = ReadInputLine(line, variables);
-                instruction.Variables = variables;
-                instructions.Add(instruction);
+                var instruction = ReadInputLine(line);
+                computer.AddInstruction(instruction);
             }
-            var index = 0;
-            var intege = 0;
-            var found = false;
-            for (var i = 0; i < int.MaxValue; i++)
+
+            var i = 0;
+            while (true)
             {
-                if (found)
+                if (computer.RunWithClockSignal(i))
+                    break;
+
+                if (i == 341)
                 {
-                    intege = i - 1;
+                    i = 500;
                     break;
                 }
-
-                var variableClone = variables.EmptyClone();
-                variableClone.Variable['a'] = i;
-                variableClone.Variable['c'] = 0;
-                variableClone.Variable['d'] = i + (633 * 5);
-                foreach (var instruction in instructions)
-                {
-                    instruction.Variables = variableClone;
-                }
-                
-                while (index >= 0 && index < instructions.Count)
-                {
-                    index += instructions[index].Perform();
-                    if(variableClone.Output.Length > 10)
-                    {
-                        if (variableClone.ToString().StartsWith("0101010101"))
-                            found = true;
-
-                        break;
-                    }
-                }
+                i++;
             }
             
-
-            Console.WriteLine($"start value of a is {intege}");
+            Console.WriteLine($"Lowest integre is {i}");
         }
 
-        private Instruction ReadInputLine(string line, Variables variables)
+        protected override void SecondPart()
         {
-            var words = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            Console.WriteLine("Veeeeeeeej!");
+        }
+
+        private Day23.Instruction ReadInputLine(string line)
+        {
+            var words = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim()).ToList();
 
             if (words[0] == "cpy")
             {
-                int intFrom;
-                var copyTo = words[2][0];
-                variables.Add(copyTo);
-                if (int.TryParse(words[1], out intFrom))
-                {
-                    return new Copy(intFrom, copyTo);
-                }
-
-                var charFrom = words[1][0];
-                variables.Add(charFrom);
-                return new Copy(charFrom, copyTo);
+                return new Copy(words[1], words[2]);
             }
 
             if (words[0] == "inc")
             {
-                int intFrom;
-                if (int.TryParse(words[1], out intFrom))
-                {
-                    return new Increment(intFrom);
-                }
-
-                var charFrom = words[1][0];
-                variables.Add(charFrom);
-                return new Increment(charFrom);
+                return new Increase(words[1]);
 
             }
 
             if (words[0] == "dec")
             {
-                int intFrom;
-                if (int.TryParse(words[1], out intFrom))
-                {
-                    return new Decrement(intFrom);
-                }
-
-                var charFrom = words[1][0];
-                variables.Add(charFrom);
-                return new Decrement(charFrom);
+                return new Decrease(words[1]);
             }
 
             if (words[0] == "jnz")
             {
-                int intFrom;
-                var step = Convert.ToInt32(words[2]);
-                if (int.TryParse(words[1], out intFrom))
-                {
-                    return new Jump(intFrom, step);
-                }
+                return new Day23.Jump(words[1], words[2]);
+            }
 
-                var charFrom = words[1][0];
-                variables.Add(charFrom);
-                return new Jump(charFrom, step);
+            if (words[0] == "tgl")
+            {
+                return new Toggle(words[1]);
             }
 
             if (words[0] == "out")
             {
-                int intFrom;
-                if (int.TryParse(words[1], out intFrom))
-                {
-                    return new Output(intFrom);
-                }
-
-                var charFrom = words[1][0];
-                variables.Add(charFrom);
-                return new Jump(charFrom);
+                return new Output(words[1]);
             }
 
-            return null;
+            throw new Exception($"Unknown instructions {words[0]}");
         }
 
         protected override string GetStringDay()

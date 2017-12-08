@@ -1,53 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AdventOfCode2016.Day12;
+using AdventOfCode2016.Day23;
 
 namespace AdventOfCode2016.Day25
 {
     public class Output : Instruction
     {
-        #region Fields
+        private char? registerName;
+        private int? number;
 
-        private readonly char? from;
-        private readonly int? fromint;
-
-        #endregion
-
-        #region Constructors
-
-        public Output()
+        public Output(string register)
         {
-            Step = 1;
-        }
-
-        public Output(int item) : this()
-        {
-            fromint = item;
-        }
-
-        public Output(char item) : this()
-        {
-            @from = item;
-        }
-
-        #endregion
-
-        public override int Perform()
-        {
-            if (fromint != null)
-            {
-                Variables.Output.Append("" + fromint);
-            }
+            TwoInstructions = false;
+            if (int.TryParse(register, out var x))
+                number = x;
             else
-            {
-                Variables.Output.Append("" + @from);
-            }
+                registerName = register[0];
+        }
 
-            return Step;
-            
+        public override List<char> Register()
+        {
+            return registerName.HasValue ? new List<char> { registerName.Value } : new List<char>();
+        }
+
+        public override int Process(Dictionary<char, int> register, List<int> clockSignal)
+        {
+            clockSignal.Add(registerName.HasValue ? register[registerName.Value] : number.Value);
+            return 1;
+        }
+
+        public override Instruction ToggleInstruction()
+        {
+            return new Increase(registerName?.ToString() ?? number.Value.ToString());
         }
     }
 }
