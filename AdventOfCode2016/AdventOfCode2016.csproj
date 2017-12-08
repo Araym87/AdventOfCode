@@ -86,6 +86,8 @@
     <Compile Include="Day23\ISupportToggle.cs" />
     <Compile Include="Day23\Jump.cs" />
     <Compile Include="Day23\Toggle.cs" />
+    <Compile Include="Day24\Path.cs" />
+    <Compile Include="Day24\Progress.cs" />
     <Compile Include="Day25\DayTwentyFive.cs" />
     <Compile Include="Day25\Output.cs" />
     <Compile Include="Day2\DayTwo.cs" />
@@ -117,10 +119,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Day24\DayTwentyFour.cs" />
     <Content Include="Inputs\input11a.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Inputs\input23.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\input24.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Inputs\input25.txt">

@@ -16,6 +16,7 @@ using AdventOfCode2016.Day20;
 using AdventOfCode2016.Day21;
 using AdventOfCode2016.Day22;
 using AdventOfCode2016.Day23;
+using AdventOfCode2016.Day24;
 using AdventOfCode2016.Day25;
 using AdventOfCode2016.Day3;
 using AdventOfCode2016.Day4;
@@ -51,7 +52,7 @@ namespace AdventOfCode2016
 
         private static void InitializeCurrentDay()
         {
-            dayResults.Add(new DayTwentyThree());
+            dayResults.Add(new DayTwentyFour());
         }
 
         private static void InitializeDays()
@@ -78,6 +79,7 @@ namespace AdventOfCode2016
             dayResults.Add(new DayTwenty());
             dayResults.Add(new DayTwentyOne());
             dayResults.Add(new DayTwentyTwo());
+            dayResults.Add(new DayTwentyThree());
             dayResults.Add(new DayTwentyFive());
 
         }
