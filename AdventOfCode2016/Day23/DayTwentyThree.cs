@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AdventOfCode.Common.General;
 using AdventOfCode2016.Day12;
-using AdventOfCode2016.General;
 
 namespace AdventOfCode2016.Day23
 {

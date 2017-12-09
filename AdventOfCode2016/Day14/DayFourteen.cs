@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using AdventOfCode2016.General;
+using AdventOfCode.Common.General;
 
 namespace AdventOfCode2016.Day14
 {

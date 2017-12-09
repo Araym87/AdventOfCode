@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventOfCode2016.General;
+using AdventOfCode.Common.General;
 
 namespace AdventOfCode2016.Day18
 {

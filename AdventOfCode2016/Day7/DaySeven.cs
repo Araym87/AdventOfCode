@@ -5,7 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using AdventOfCode2016.General;
+using AdventOfCode.Common.General;
 
 namespace AdventOfCode2016.Day7
 {

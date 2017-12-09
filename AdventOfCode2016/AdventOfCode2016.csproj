@@ -111,7 +111,6 @@
     <Compile Include="Day8\DoorPanel.cs" />
     <Compile Include="Day8\EInstruction.cs" />
     <Compile Include="Day9\DayNine.cs" />
-    <Compile Include="General\DayResult.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -180,6 +179,12 @@
     <Content Include="Inputs\input1.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdventOfCode.Common\AdventOfCode.Common.csproj">
+      <Project>{426a8512-a241-4e11-b6f1-19a5dde0ae15}</Project>
+      <Name>AdventOfCode.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

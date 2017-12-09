@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AdventOfCode2016.General
+namespace AdventOfCode.Common.General
 {
     public abstract class DayResult
     {

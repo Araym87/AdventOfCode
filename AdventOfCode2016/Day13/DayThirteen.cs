@@ -6,8 +6,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using AdventOfCode.Common.General;
 using AdventOfCode2016.Day11;
-using AdventOfCode2016.General;
 
 namespace AdventOfCode2016.Day13
 {

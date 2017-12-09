@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using AdventOfCode2016.General;
+using AdventOfCode.Common.General;
 
 namespace AdventOfCode2016.Day9
 {

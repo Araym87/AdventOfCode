@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AdventOfCode.Common.General;
 using AdventOfCode2016.Day1;
 using AdventOfCode2016.Day10;
 using AdventOfCode2016.Day11;
@@ -25,7 +26,6 @@ using AdventOfCode2016.Day6;
 using AdventOfCode2016.Day7;
 using AdventOfCode2016.Day8;
 using AdventOfCode2016.Day9;
-using AdventOfCode2016.General;
 
 namespace AdventOfCode2016
 {
