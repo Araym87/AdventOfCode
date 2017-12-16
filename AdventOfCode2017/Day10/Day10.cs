@@ -63,7 +63,7 @@ namespace AdventOfCode2017.Day10
             var result = string.Empty;
             foreach (var i in denseHash)
                 result += i.ToString("X2");
-            
+
             Console.WriteLine($"Result is {result}");
         }
 

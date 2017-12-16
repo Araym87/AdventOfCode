@@ -48,6 +48,19 @@
     <Compile Include="Day11\ThreeDeePoint.cs" />
     <Compile Include="Day11\Day11.cs" />
     <Compile Include="Day11\Directions.cs" />
+    <Compile Include="Day12\Day12.cs" />
+    <Compile Include="Day12\Pipe.cs" />
+    <Compile Include="Day13\Day13.cs" />
+    <Compile Include="Day13\Layer.cs" />
+    <Compile Include="Day14\Day14.cs" />
+    <Compile Include="Day15\Day15.cs" />
+    <Compile Include="Day15\Generator.cs" />
+    <Compile Include="Day16\CharArrayEqualityComparer.cs" />
+    <Compile Include="Day16\Day16.cs" />
+    <Compile Include="Day16\Exchange.cs" />
+    <Compile Include="Day16\IDanceInstruction.cs" />
+    <Compile Include="Day16\Partner.cs" />
+    <Compile Include="Day16\Spin.cs" />
     <Compile Include="Day1\Day1.cs" />
     <Compile Include="Day2\Day2.cs" />
     <Compile Include="Day3\Day3.cs" />
@@ -60,6 +73,7 @@
     <Compile Include="Day7\Day7.cs" />
     <Compile Include="Day8\Day8.cs" />
     <Compile Include="Day9\Day9.cs" />
+    <Compile Include="KnotHashAlgorithm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -80,6 +94,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Inputs\Input11.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\Input12.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\Input13.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\Input15.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\Input16.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Inputs\Input2.txt">
