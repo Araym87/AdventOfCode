@@ -62,6 +62,19 @@
     <Compile Include="Day16\Partner.cs" />
     <Compile Include="Day16\Spin.cs" />
     <Compile Include="Day17\Day17.cs" />
+    <Compile Include="Day18\Recovery.cs" />
+    <Compile Include="Day18\Receive.cs" />
+    <Compile Include="Day18\Send.cs" />
+    <Compile Include="Day18\Sound.cs" />
+    <Compile Include="Day18\Jump.cs" />
+    <Compile Include="Day18\Modulo.cs" />
+    <Compile Include="Day18\Multiply.cs" />
+    <Compile Include="Day18\Set.cs" />
+    <Compile Include="Day18\Computer.cs" />
+    <Compile Include="Day18\ComputerArgs.cs" />
+    <Compile Include="Day18\Add.cs" />
+    <Compile Include="Day18\Day18.cs" />
+    <Compile Include="Day18\Instruction.cs" />
     <Compile Include="Day1\Day1.cs" />
     <Compile Include="Day2\Day2.cs" />
     <Compile Include="Day3\Day3.cs" />
@@ -107,6 +120,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Inputs\Input16.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\Input18.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Inputs\Input2.txt">
