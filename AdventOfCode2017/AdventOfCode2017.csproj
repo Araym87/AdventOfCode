@@ -75,7 +75,11 @@
     <Compile Include="Day18\Add.cs" />
     <Compile Include="Day18\Day18.cs" />
     <Compile Include="Day18\Instruction.cs" />
+    <Compile Include="Day19\Day19.cs" />
     <Compile Include="Day1\Day1.cs" />
+    <Compile Include="Day20\Day20.cs" />
+    <Compile Include="Day20\Particle.cs" />
+    <Compile Include="Day20\Vector.cs" />
     <Compile Include="Day2\Day2.cs" />
     <Compile Include="Day3\Day3.cs" />
     <Compile Include="Day3\Direction.cs" />
@@ -125,7 +129,13 @@
     <Content Include="Inputs\Input18.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Inputs\Input19.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Inputs\Input2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Inputs\Input20.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Inputs\Input4.txt">

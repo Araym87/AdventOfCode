@@ -34,7 +34,7 @@ namespace AdventOfCode2017
 
         private static void InitializeCurrentDay()
         {
-            DayResults.Add(new Day18.Day18());
+            DayResults.Add(new Day20.Day20());
         }
 
         private static void InitializeDays()
@@ -57,8 +57,8 @@ namespace AdventOfCode2017
             DayResults.Add(new Day16.Day16());
             DayResults.Add(new Day17.Day17());
             DayResults.Add(new Day18.Day18());
-            //DayResults.Add(new DayNineteen());
-            //DayResults.Add(new DayTwenty());
+            DayResults.Add(new Day19.Day19());
+            DayResults.Add(new Day20.Day20());
             //DayResults.Add(new DayTwentyOne());
             //DayResults.Add(new DayTwentyTwo());
             //DayResults.Add(new DayTwentyThree());
