@@ -90,8 +90,15 @@ namespace AdventOfCode2017.Day18
                     return ComputerArgs.LastFrequency;
 
             }
-
             throw new Exception("Computer did not sent frequency by recovery instruction");
+        }
+
+        public void RunSimple()
+        {
+            while (ComputerArgs.Pointer >= 0 && ComputerArgs.Pointer < Instructions.Count)
+            {
+                Instructions[(int) ComputerArgs.Pointer].Process(ComputerArgs);
+            }
         }
 
         public void RunSecond(CancellationTokenSource cancellationToken)

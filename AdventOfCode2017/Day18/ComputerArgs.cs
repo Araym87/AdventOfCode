@@ -35,6 +35,11 @@ namespace AdventOfCode2017.Day18
         /// </summary>
         public Func<long> ReceiveAction { get; set; }
 
+        /// <summary>
+        /// Number of calls of Multiply instructions
+        /// </summary>
+        public int NumberOfMultiplyInstructionCall { get; set; }
+
         #endregion
     }
 }

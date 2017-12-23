@@ -3,9 +3,9 @@
 namespace AdventOfCode2017.Day18
 {
     /// <summary>
-    /// Multiply Instructions
+    /// Jump Greater Then Zero instruction
     /// </summary>
-    public class Multiply : Instruction
+    public class JumpNotZero : Instruction
     {
         #region Fields
 
@@ -19,7 +19,7 @@ namespace AdventOfCode2017.Day18
 
         #region Constructor
 
-        public Multiply(string x, string y)
+        public JumpNotZero(string x, string y)
         {
             if (long.TryParse(x, out var xValue))
                 xLong = xValue;
@@ -50,15 +50,14 @@ namespace AdventOfCode2017.Day18
 
         public override bool Process(ComputerArgs computerArgs)
         {
-            computerArgs.NumberOfMultiplyInstructionCall++;
-            if (!xChar.HasValue)
+            var xValue = xChar.HasValue ? computerArgs.Register[xChar.Value] : xLong;
+            if (xValue == 0)
             {
                 computerArgs.Pointer++;
                 return true;
             }
 
-            computerArgs.Register[xChar.Value] *= yChar.HasValue ? computerArgs.Register[yChar.Value] : yLong.Value;
-            computerArgs.Pointer++;
+            computerArgs.Pointer += yChar.HasValue ? computerArgs.Register[yChar.Value] : yLong.Value;
             return true;
         }
 

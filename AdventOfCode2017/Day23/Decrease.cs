@@ -3,9 +3,9 @@
 namespace AdventOfCode2017.Day18
 {
     /// <summary>
-    /// Multiply Instructions
+    /// Set Instructions
     /// </summary>
-    public class Multiply : Instruction
+    public class Decrease : Instruction
     {
         #region Fields
 
@@ -19,7 +19,7 @@ namespace AdventOfCode2017.Day18
 
         #region Constructor
 
-        public Multiply(string x, string y)
+        public Decrease(string x, string y)
         {
             if (long.TryParse(x, out var xValue))
                 xLong = xValue;
@@ -50,14 +50,13 @@ namespace AdventOfCode2017.Day18
 
         public override bool Process(ComputerArgs computerArgs)
         {
-            computerArgs.NumberOfMultiplyInstructionCall++;
             if (!xChar.HasValue)
             {
                 computerArgs.Pointer++;
                 return true;
             }
 
-            computerArgs.Register[xChar.Value] *= yChar.HasValue ? computerArgs.Register[yChar.Value] : yLong.Value;
+            computerArgs.Register[xChar.Value] -= yChar.HasValue ? computerArgs.Register[yChar.Value] : yLong.Value;
             computerArgs.Pointer++;
             return true;
         }
